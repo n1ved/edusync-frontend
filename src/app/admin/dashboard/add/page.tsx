@@ -132,7 +132,7 @@ export default function AddStaff() {
                                     <Input placeholder="Name"/>
                                 </form>
                                 <div className={"mt-4"}/>
-                                <form >
+                                <form>
                                     <Select onValueChange={(value) => handleClassInChargeChange(value)}>
                                         <SelectTrigger className="w-[280px]">
                                             <SelectValue placeholder="Class of Charge"/>
@@ -163,6 +163,23 @@ export default function AddStaff() {
                                     </form>
                                 }
                                 <div className={"mt-4"}/>
+                                <form>
+                                    <Input placeholder="Classes and Subjects taught seperated by comma"/>
+                                </form>
+                                <div className={"mt-4"}/>
+                                <h3 className={"text-lg font-semibold text-muted-foreground"}>Credentials</h3>
+                                <div className={"mt-2"}/>
+                                <form>
+                                    <Input placeholder="Create a username"/>
+                                </form>
+                                <div className={"mt-4"}/>
+                                <form>
+                                    <Input type="password" placeholder="Create a password"/>
+                                </form>
+                                <div className={"mt-4"}/>
+                                <form>
+                                    <Input type="password" placeholder="confirm password"/>
+                                </form>
 
                             </CardContent>
                             <CardFooter className="border-t px-6 py-4">
