@@ -42,10 +42,46 @@ export default function AddStaff() {
 
     const [newClassCreation , setNewClassCreation] = React.useState(false);
 
-    function handleClassInChargeChange(event : string){
-       setNewClassCreation(event === "create-new");
+    const [name, setName] = React.useState("");
+    const [classInCharge, setClassInCharge] = React.useState("");
+    const [className, setClassName] = React.useState("");
+    const [classes, setClasses] = React.useState("");
+    const [username, setUsername] = React.useState("");
+    const [password, setPassword] = React.useState("");
+    const [confirmPassword, setConfirmPassword] = React.useState("");
+
+
+    const availableClasses = {
+        "2026": ["CS26A", "CS26B", "CS26C"],
+        "2027": ["CS27A", "CS27B", "CS27C"]
     }
 
+
+    function handleClassInChargeChange(event : string){
+       if(event == "create-new"){
+           setNewClassCreation(true);
+       }else{
+           setClassInCharge(event);
+       }
+    }
+
+    function onSubmission(){
+        if (password != confirmPassword){
+            alert("Passwords don't match");
+            setPassword("");
+            setConfirmPassword("");
+        }
+        console.log(name);
+        console.log(classInCharge);
+        console.log(className);
+        console.log(classes);
+        console.log(username);
+        console.log(password);
+    }
+
+    function goBack(){
+        window.history.back();
+    }
 
     return (
         <div className="flex min-h-screen w-full flex-col">
@@ -129,7 +165,7 @@ export default function AddStaff() {
                             </CardHeader>
                             <CardContent>
                                 <form>
-                                    <Input placeholder="Name"/>
+                                    <Input placeholder="Name" onChange={(event) => setName(event.target.value)}/>
                                 </form>
                                 <div className={"mt-4"}/>
                                 <form>
@@ -140,18 +176,24 @@ export default function AddStaff() {
                                         <SelectContent>
                                             <SelectItem value={"nocharge"}>No Class In Charge</SelectItem>
                                             <SelectItem value={"create-new"}>Create New Class</SelectItem>
-                                            <SelectGroup>
-                                                <SelectLabel>2026</SelectLabel>
-                                                <SelectItem value="cs26a">CS26A</SelectItem>
-                                                <SelectItem value="cs26b">CS26B</SelectItem>
-                                                <SelectItem value="cs26c">CS26C</SelectItem>
-                                            </SelectGroup>
-                                            <SelectGroup>
-                                                <SelectLabel>2027</SelectLabel>
-                                                <SelectItem value="cs27a">CS27A</SelectItem>
-                                                <SelectItem value="cs27b">CS27B</SelectItem>
-                                                <SelectItem value="cs27c">CS27C</SelectItem>
-                                            </SelectGroup>
+                                            {
+                                                Object.keys(availableClasses).map((year) => {
+                                                    // @ts-ignore
+                                                    return (
+                                                        <SelectGroup key={null}>
+                                                            <SelectLabel>{year}</SelectLabel>
+                                                            {
+                                                                // @ts-ignore
+                                                                availableClasses[year].map((class_name) => {
+                                                                    return (
+                                                                        <SelectItem value={class_name}>{class_name}</SelectItem>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </SelectGroup>
+                                                    )
+                                                })
+                                            }
                                         </SelectContent>
                                     </Select>
                                 </form>
@@ -159,31 +201,33 @@ export default function AddStaff() {
                                 {
                                     newClassCreation &&
                                     <form>
-                                        <Input placeholder="Class Name"/>
+                                        <Input placeholder="Class Name" onChange={(event) => setClassName(event.target.value)}/>
                                     </form>
                                 }
                                 <div className={"mt-4"}/>
                                 <form>
-                                    <Input placeholder="Classes and Subjects taught seperated by comma"/>
+                                    <Input placeholder="Classes and Subjects taught seperated by comma" onChange={(event) => setClasses(event.target.value)}/>
                                 </form>
                                 <div className={"mt-4"}/>
                                 <h3 className={"text-lg font-semibold text-muted-foreground"}>Credentials</h3>
                                 <div className={"mt-2"}/>
                                 <form>
-                                    <Input placeholder="Create a username"/>
+                                    <Input placeholder="Create a username" onChange={(event) => setUsername(event.target.value)}/>
                                 </form>
                                 <div className={"mt-4"}/>
                                 <form>
-                                    <Input type="password" placeholder="Create a password"/>
+                                    <Input type="password" placeholder="Create a password" onChange={(event) => setPassword(event.target.value)}/>
                                 </form>
                                 <div className={"mt-4"}/>
                                 <form>
-                                    <Input type="password" placeholder="confirm password"/>
+                                    <Input type="password" placeholder="confirm password" onChange={(event) => setConfirmPassword(event.target.value)}/>
                                 </form>
 
                             </CardContent>
                             <CardFooter className="border-t px-6 py-4">
-                                <Button>Save</Button>
+                                <Button onClick={onSubmission}>Save</Button>
+                                <div className={"mr-2"}/>
+                                <Button variant={"outline"} onClick={goBack}>Cancel</Button>
                             </CardFooter>
                         </Card>
                     </div>
