@@ -13,42 +13,32 @@ import {list} from "postcss";
 
 export default function TableRowDynamic(
     {
+        id,
         name,
-        chargeOf,
-        courses,
-        classes,
+        DOB,
+        phone,
         createdAt
     }: {
+        id: string,
         name: string,
-        chargeOf: string,
-        courses: string[],
-        classes: string[],
+        DOB: string,
+        phone: string,
         createdAt: string
     }
 
 ){
     return( <TableRow>
         <TableCell className="font-medium">
-            {name}
+            {id}
         </TableCell>
         <TableCell>
-            <Badge variant="outline">
-                {chargeOf}
-            </Badge>
+            {name}
         </TableCell>
         <TableCell className="hidden md:table-cell">
-            {courses.map((course) => (
-                <Badge key={course} variant="secondary">
-                    {course}
-                </Badge>
-            ))}
+            {DOB}
         </TableCell>
         <TableCell className="hidden md:table-cell">
-            {classes.map((classes) => (
-                <Badge key={classes } variant="secondary">
-                    {classes}
-                </Badge>
-            ))}
+            {phone}
         </TableCell>
         <TableCell className="hidden md:table-cell">
             {createdAt}

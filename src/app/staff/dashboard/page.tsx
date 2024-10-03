@@ -3,6 +3,8 @@ import Link from "next/link"
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 
 import {
+    EditIcon,
+    MoreHorizontal, Paperclip, PersonStanding,
     PlusCircle,
 } from "lucide-react"
 
@@ -17,247 +19,124 @@ import {
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuItem,
+    DropdownMenuItem, DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
     Table,
-    TableBody,
+    TableBody, TableCell,
     TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
 import {
     Tabs,
-    TabsContent,
+    TabsContent, TabsList, TabsTrigger,
 } from "@/components/ui/tabs"
-import TableRowDynamic from "@/components/admin/dashboard/tablerow";
+import TableRowDynamic from "@/components/staff/dashboard/tablerow";
 
 export default function Dashboard() {
 
-
-    const staffData = [
+    const assignmentData = [
         {
-            name: "John Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
+            id: "1",
+            description: "Assignment 1",
+            class: "CST201",
+            dueDate: "01/01/2021"
         },
         {
-            name: "Jane Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
+            id: "2",
+            description: "Assignment 2",
+            class: "CST201",
+            dueDate: "01/01/2021"
         },
         {
-            name: "John Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
+            id: "3",
+            description: "Assignment 3",
+            class: "CST201",
+            dueDate: "01/01/2021"
         },
         {
-            name: "Jane Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
-        },
-        {
-            name: "John Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
-        },
-        {
-            name: "Jane Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
-        },
-        {
-            name: "John Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
-        },
-        {
-            name: "Jane Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
-        },
-        {
-            name: "John Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
+            id: "4",
+            description: "Assignment 4",
+            class: "CST201",
+            dueDate: "01/01/2021"
         }
     ]
+
+    const scheduleData = [
+        {
+            day: "MON",
+            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
+        },
+        {
+            day: "TUE",
+            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
+        },
+        {
+            day: "WED",
+            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
+        },
+        {
+            day: "THU",
+            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
+        },
+        {
+            day: "FRI",
+            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
+        },
+        {
+            day: "SAT",
+            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
+        },
+        {
+            day: "SUN",
+            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
+        }
+    ]
+
+
+
+    const studentData = [
+        {
+            id: "1",
+            name: "John Doe",
+            DOB: "01/01/2001",
+            phone: "1234567890",
+            createdAt: "01/01/2021"
+        },
+        {
+            id: "2",
+            name: "Jane Doe",
+            DOB: "01/01/2001",
+            phone: "1234567890",
+            createdAt: "01/01/2021"
+        },
+        {
+            id: "3",
+            name: "John Smith",
+            DOB: "01/01/2001",
+            phone: "1234567890",
+            createdAt: "01/01/2021"
+        },
+        {
+            id: "4",
+            name: "Jane Smith",
+            DOB: "01/01/2001",
+            phone: "1234567890",
+            createdAt: "01/01/2021"
+        }
+        ]
 
     return (
         <TooltipProvider>
         <div className="flex min-h-screen w-full flex-col bg-muted/40">
-            {/*<aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">*/}
-            {/*    <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">*/}
-            {/*        <Link*/}
-            {/*            href="#"*/}
-            {/*            className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"*/}
-            {/*        >*/}
-            {/*            <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />*/}
-            {/*            <span className="sr-only">EduSync</span>*/}
-            {/*        </Link>*/}
-            {/*        <Tooltip>*/}
-            {/*            <TooltipTrigger asChild>*/}
-            {/*                <Link*/}
-            {/*                    href="#"*/}
-            {/*                    className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"*/}
-            {/*                >*/}
-            {/*                    <Home className="h-5 w-5" />*/}
-            {/*                    <span className="sr-only">Dashboard</span>*/}
-            {/*                </Link>*/}
-            {/*            </TooltipTrigger>*/}
-            {/*            <TooltipContent side="right">Dashboard</TooltipContent>*/}
-            {/*        </Tooltip>*/}
-            {/*        <Tooltip>*/}
-            {/*            <TooltipTrigger asChild>*/}
-            {/*                <Link*/}
-            {/*                    href="#"*/}
-            {/*                    className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"*/}
-            {/*                >*/}
-            {/*                    <ShoppingCart className="h-5 w-5" />*/}
-            {/*                    <span className="sr-only">Orders</span>*/}
-            {/*                </Link>*/}
-            {/*            </TooltipTrigger>*/}
-            {/*            <TooltipContent side="right">Orders</TooltipContent>*/}
-            {/*        </Tooltip>*/}
-            {/*        <Tooltip>*/}
-            {/*            <TooltipTrigger asChild>*/}
-            {/*                <Link*/}
-            {/*                    href="#"*/}
-            {/*                    className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"*/}
-            {/*                >*/}
-            {/*                    <Package className="h-5 w-5" />*/}
-            {/*                    <span className="sr-only">Products</span>*/}
-            {/*                </Link>*/}
-            {/*            </TooltipTrigger>*/}
-            {/*            <TooltipContent side="right">Products</TooltipContent>*/}
-            {/*        </Tooltip>*/}
-            {/*        <Tooltip>*/}
-            {/*            <TooltipTrigger asChild>*/}
-            {/*                <Link*/}
-            {/*                    href="#"*/}
-            {/*                    className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"*/}
-            {/*                >*/}
-            {/*                    <Users2 className="h-5 w-5" />*/}
-            {/*                    <span className="sr-only">Customers</span>*/}
-            {/*                </Link>*/}
-            {/*            </TooltipTrigger>*/}
-            {/*            <TooltipContent side="right">Customers</TooltipContent>*/}
-            {/*        </Tooltip>*/}
-            {/*        <Tooltip>*/}
-            {/*            <TooltipTrigger asChild>*/}
-            {/*                <Link*/}
-            {/*                    href="#"*/}
-            {/*                    className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"*/}
-            {/*                >*/}
-            {/*                    <LineChart className="h-5 w-5" />*/}
-            {/*                    <span className="sr-only">Analytics</span>*/}
-            {/*                </Link>*/}
-            {/*            </TooltipTrigger>*/}
-            {/*            <TooltipContent side="right">Analytics</TooltipContent>*/}
-            {/*        </Tooltip>*/}
-            {/*    </nav>*/}
-            {/*    <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">*/}
-            {/*        <Tooltip>*/}
-            {/*            <TooltipTrigger asChild>*/}
-            {/*                <Link*/}
-            {/*                    href="#"*/}
-            {/*                    className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"*/}
-            {/*                >*/}
-            {/*                    <Settings className="h-5 w-5" />*/}
-            {/*                    <span className="sr-only">Settings</span>*/}
-            {/*                </Link>*/}
-            {/*            </TooltipTrigger>*/}
-            {/*            <TooltipContent side="right">Settings</TooltipContent>*/}
-            {/*        </Tooltip>*/}
-            {/*    </nav>*/}
-            {/*</aside>*/}
             <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
                 <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-                    {/*<Sheet>*/}
-                    {/*    <SheetTrigger asChild>*/}
-                    {/*        <Button size="icon" variant="outline" className="sm:hidden">*/}
-                    {/*            <PanelLeft className="h-5 w-5" />*/}
-                    {/*            <span className="sr-only">Toggle Menu</span>*/}
-                    {/*        </Button>*/}
-                    {/*    </SheetTrigger>*/}
-                    {/*    <SheetContent side="left" className="sm:max-w-xs">*/}
-                    {/*        <nav className="grid gap-6 text-lg font-medium">*/}
-                    {/*            <Link*/}
-                    {/*                href="#"*/}
-                    {/*                className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"*/}
-                    {/*            >*/}
-                    {/*                <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />*/}
-                    {/*                <span className="sr-only">Acme Inc</span>*/}
-                    {/*            </Link>*/}
-                    {/*            <Link*/}
-                    {/*                href="#"*/}
-                    {/*                className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"*/}
-                    {/*            >*/}
-                    {/*                <Home className="h-5 w-5" />*/}
-                    {/*                Dashboard*/}
-                    {/*            </Link>*/}
-                    {/*            <Link*/}
-                    {/*                href="#"*/}
-                    {/*                className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"*/}
-                    {/*            >*/}
-                    {/*                <ShoppingCart className="h-5 w-5" />*/}
-                    {/*                Orders*/}
-                    {/*            </Link>*/}
-                    {/*            <Link*/}
-                    {/*                href="#"*/}
-                    {/*                className="flex items-center gap-4 px-2.5 text-foreground"*/}
-                    {/*            >*/}
-                    {/*                <Package className="h-5 w-5" />*/}
-                    {/*                Products*/}
-                    {/*            </Link>*/}
-                    {/*            <Link*/}
-                    {/*                href="#"*/}
-                    {/*                className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"*/}
-                    {/*            >*/}
-                    {/*                <Users2 className="h-5 w-5" />*/}
-                    {/*                Customers*/}
-                    {/*            </Link>*/}
-                    {/*            <Link*/}
-                    {/*                href="#"*/}
-                    {/*                className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"*/}
-                    {/*            >*/}
-                    {/*                <LineChart className="h-5 w-5" />*/}
-                    {/*                Settings*/}
-                    {/*            </Link>*/}
-                    {/*        </nav>*/}
-                    {/*    </SheetContent>*/}
-                    {/*</Sheet>*/}
 
                     <div className="relative ml-auto flex-1 md:grow-0">
                         <div className="ml-auto flex items-center gap-2">
-                            <a href={"/admin/dashboard/add"}>
 
-                                <Button size="sm" className="h-8 gap-1">
-                                    <PlusCircle className="h-3.5 w-3.5"/>
-                                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                        Add Staff
-                                    </span>
-                                </Button>
-                            </a>
                         </div>
                     </div>
                     <DropdownMenu>
@@ -282,7 +161,48 @@ export default function Dashboard() {
                     </DropdownMenu>
                 </header>
                 <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-                    <Tabs defaultValue="all">
+                    <Tabs defaultValue="students">
+                        <div className="flex items-center flex-col sm:flex-row">
+                            <TabsList>
+                                <TabsTrigger value="students">Students</TabsTrigger>
+                                <TabsTrigger value="schedule">Schedule</TabsTrigger>
+                                <TabsTrigger value="assignment">Assignments</TabsTrigger>
+                            </TabsList>
+                            <div className="ml-auto flex items-center gap-2 w-full justify-center m-2 sm:w-fit">
+                                <a href={"/staff/dashboard/assignment"}>
+                                    <Button size="sm" className="h-8 gap-1">
+                                        <Paperclip className="h-3.5 w-3.5"/>
+                                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                                        Assignments
+                                    </span>
+                                    </Button>
+                                </a>
+                                <a href={"/staff/dashboard/attendance"}>
+                                    <Button size="sm" className="h-8 gap-1">
+                                        <PersonStanding className="h-3.5 w-3.5"/>
+                                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                                        Attendance
+                                    </span>
+                                    </Button>
+                                </a>
+                                <a href={"/staff/dashboard/schedule"}>
+                                    <Button size="sm" className="h-8 gap-1">
+                                        <EditIcon className="h-3.5 w-3.5"/>
+                                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                                        Schedule
+                                    </span>
+                                    </Button>
+                                </a>
+                                <a href={"/staff/dashboard/add"}>
+                                    <Button size="sm" className="h-8 gap-1">
+                                        <PlusCircle className="h-3.5 w-3.5"/>
+                                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                                        Add Student
+                                    </span>
+                                    </Button>
+                                </a>
+                            </div>
+                        </div>
                         <div className="flex items-center">
                             {/*<TabsList>*/}
                             {/*    <TabsTrigger value="all">All</TabsTrigger>*/}
@@ -300,25 +220,25 @@ export default function Dashboard() {
                             {/*    </a>*/}
                             {/*</div>*/}
                         </div>
-                        <TabsContent value="all">
+                        <TabsContent value="students">
                             <Card x-chunk="dashboard-06-chunk-0">
                                 <CardHeader>
-                                    <CardTitle>Staffs</CardTitle>
+                                    <CardTitle>Students</CardTitle>
                                     <CardDescription>
-                                        Manage staff information and permissions
+                                        Manage students in your class
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
                                     <Table>
                                         <TableHeader>
                                             <TableRow>
+                                                <TableHead>ID</TableHead>
                                                 <TableHead>Name</TableHead>
-                                                <TableHead>In Charge</TableHead>
                                                 <TableHead className="hidden md:table-cell">
-                                                    Subjects
+                                                    DOB
                                                 </TableHead>
                                                 <TableHead className="hidden md:table-cell">
-                                                    Classes
+                                                    Phone
                                                 </TableHead>
                                                 <TableHead className="hidden md:table-cell">
                                                     Created at
@@ -330,14 +250,128 @@ export default function Dashboard() {
                                         </TableHeader>
                                         <TableBody>
                                             {
-                                                staffData.map((staff, index) => (
+                                                studentData.map((student, index) => (
                                                     <TableRowDynamic
-                                                        name= {staff.name}
-                                                        chargeOf= {staff.chargeOf}
-                                                        courses= {staff.courses}
-                                                        classes= {staff.classes}
-                                                        createdAt= {staff.createdAt}
+                                                        id={student.id}
+                                                        name={student.name}
+                                                        DOB={student.DOB}
+                                                        phone={student.phone}
+                                                        createdAt={student.createdAt}
                                                     />
+                                                ))
+                                            }
+                                        </TableBody>
+                                    </Table>
+                                </CardContent>
+                                {/*<CardFooter>*/}
+                                {/*    <div className="text-xs text-muted-foreground">*/}
+                                {/*        Showing <strong>1-10</strong> of <strong>32</strong>{" "}*/}
+
+                                {/*    </div>*/}
+                                {/*</CardFooter>*/}
+                            </Card>
+                        </TabsContent>
+                        <TabsContent value="schedule">
+                            <Card x-chunk="dashboard-06-chunk-0">
+                                <CardHeader>
+                                    <CardTitle>Daily Schedule</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead>DAY</TableHead>
+                                                <TableHead>1</TableHead>
+                                                <TableHead>2</TableHead>
+                                                <TableHead>3</TableHead>
+                                                <TableHead>4</TableHead>
+                                                <TableHead>5</TableHead>
+                                                <TableHead>6</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {
+                                                scheduleData.map((schedule, index) => (
+                                                    <TableRow>
+                                                        <TableCell>
+                                                            {schedule.day}
+                                                        </TableCell>
+                                                        {
+                                                            schedule.hrs.map((hour, index) => (
+                                                                <TableCell>
+                                                                    {hour}
+                                                                </TableCell>
+                                                            ))
+                                                        }
+                                                    </TableRow>
+                                                ))
+                                            }
+                                        </TableBody>
+                                    </Table>
+                                </CardContent>
+                                {/*<CardFooter>*/}
+                                {/*    <div className="text-xs text-muted-foreground">*/}
+                                {/*        Showing <strong>1-10</strong> of <strong>32</strong>{" "}*/}
+
+                                {/*    </div>*/}
+                                {/*</CardFooter>*/}
+                            </Card>
+                        </TabsContent>
+                        <TabsContent value="assignment">
+                            <Card x-chunk="dashboard-06-chunk-0">
+                                <CardHeader>
+                                    <CardTitle>Assignments</CardTitle>
+                                    <CardDescription>
+                                        Assignments created by you
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead>ID</TableHead>
+                                                <TableHead>Description</TableHead>
+                                                <TableHead>Class</TableHead>
+                                                <TableHead>Due Date</TableHead>
+                                                <TableHead></TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {
+                                                assignmentData.map((assignment, index) => (
+                                                    <TableRow>
+                                                        <TableCell>
+                                                            {assignment.id}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {assignment.description}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {assignment.class}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {assignment.dueDate}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <DropdownMenu>
+                                                                <DropdownMenuTrigger asChild>
+                                                                    <Button
+                                                                        aria-haspopup="true"
+                                                                        size="icon"
+                                                                        variant="ghost"
+                                                                    >
+                                                                        <MoreHorizontal className="h-4 w-4" />
+                                                                        <span className="sr-only">Toggle menu</span>
+                                                                    </Button>
+                                                                </DropdownMenuTrigger>
+                                                                <DropdownMenuContent align="end">
+                                                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                                                                    <DropdownMenuItem>Delete</DropdownMenuItem>
+                                                                </DropdownMenuContent>
+                                                            </DropdownMenu>
+                                                        </TableCell>
+                                                    </TableRow>
                                                 ))
                                             }
                                         </TableBody>
@@ -355,6 +389,6 @@ export default function Dashboard() {
                 </main>
             </div>
         </div>
-    </TooltipProvider>
+        </TooltipProvider>
     )
 }
