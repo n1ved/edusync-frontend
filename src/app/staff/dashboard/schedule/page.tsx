@@ -174,7 +174,7 @@ export default function AddSchedule() {
                                     {
                                         weekdays.map((day) => {
                                             return (
-                                                <div className="grid grid-cols-7 items-center gap-2">
+                                                <div className="grid grid-cols-7 items-center gap-2" key={day}>
                                                     <h2>
                                                         {day}
                                                     </h2>

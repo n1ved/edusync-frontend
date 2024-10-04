@@ -180,13 +180,13 @@ export default function AddStaff() {
                                                 Object.keys(availableClasses).map((year) => {
                                                     // @ts-ignore
                                                     return (
-                                                        <SelectGroup key={null}>
+                                                        <SelectGroup key={year}>
                                                             <SelectLabel>{year}</SelectLabel>
                                                             {
                                                                 // @ts-ignore
                                                                 availableClasses[year].map((class_name) => {
                                                                     return (
-                                                                        <SelectItem value={class_name}>{class_name}</SelectItem>
+                                                                        <SelectItem value={class_name} key={class_name}>{class_name}</SelectItem>
                                                                     )
                                                                 })
                                                             }

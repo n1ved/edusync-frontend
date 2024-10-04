@@ -257,6 +257,7 @@ export default function Dashboard() {
                                                         DOB={student.DOB}
                                                         phone={student.phone}
                                                         createdAt={student.createdAt}
+                                                        key={index}
                                                     />
                                                 ))
                                             }
@@ -292,13 +293,17 @@ export default function Dashboard() {
                                         <TableBody>
                                             {
                                                 scheduleData.map((schedule, index) => (
-                                                    <TableRow>
+                                                    <TableRow
+                                                        key={index}
+                                                    >
                                                         <TableCell>
                                                             {schedule.day}
                                                         </TableCell>
                                                         {
                                                             schedule.hrs.map((hour, index) => (
-                                                                <TableCell>
+                                                                <TableCell
+                                                                    key={index}
+                                                                >
                                                                     {hour}
                                                                 </TableCell>
                                                             ))
@@ -339,7 +344,9 @@ export default function Dashboard() {
                                         <TableBody>
                                             {
                                                 assignmentData.map((assignment, index) => (
-                                                    <TableRow>
+                                                    <TableRow
+                                                        key={index}
+                                                    >
                                                         <TableCell>
                                                             {assignment.id}
                                                         </TableCell>

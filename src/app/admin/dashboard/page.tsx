@@ -337,6 +337,7 @@ export default function Dashboard() {
                                                         courses= {staff.courses}
                                                         classes= {staff.classes}
                                                         createdAt= {staff.createdAt}
+                                                        key={index}
                                                     />
                                                 ))
                                             }
