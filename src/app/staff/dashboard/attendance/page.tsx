@@ -207,7 +207,7 @@ export default function AddStaff() {
                                 {
                                     students.map((student, index) => {
                                         return (
-                                            <Card id={index + student.id}>
+                                            <Card id={student.id} key={student.id}>
                                                 <CardHeader>
                                                     <div className={"flex justify-between"}>
                                                         <h2>
