@@ -18,22 +18,8 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import React, {useEffect} from "react";
-import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
-import {Calendar} from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue
-} from "@/components/ui/select";
-import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel} from "@/components/ui/form";
 import {Switch} from "@/components/ui/switch";
 import {useForm} from "react-hook-form";
 
@@ -41,13 +27,8 @@ import {useForm} from "react-hook-form";
 export default function AddStaff() {
 
     const [date, setDate] = React.useState<Date>()
-    const [id,setID] = React.useState("");
-    const [desc, setDesc] = React.useState("");
-    const [classCode,setClassCode] = React.useState("");
     const [subject, setSubject] = React.useState("");
-
-
-    const form = useForm();
+    const [classId, setClassId] = React.useState("");
 
     function onSubmission(){
         // later check if teacher has permission to add assignment
@@ -138,45 +119,36 @@ export default function AddStaff() {
             </header>
             <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
                 <div className="mx-auto grid w-full max-w-6xl gap-2">
-                    <h1 className="text-3xl font-semibold">Create Assignment</h1>
+                    <h1 className="text-3xl font-semibold">Mark Attendance</h1>
                 </div>
                 <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[1fr] lg:grid-cols-[1fr]">
                     <div className="grid gap-6">
                         <Card x-chunk="dashboard-04-chunk-1">
-                               <form>
-                                   <FormField
-                                       control={form.control}
-                                       name="security_emails"
-                                       render={({field}) => (
-                                           <FormItem
-                                               className="flex flex-row items-center justify-between rounded-lg border p-4">
-                                               <div className="space-y-0.5">
-                                                   <FormLabel className="text-base">Security emails</FormLabel>
-                                                   <FormDescription>
-                                                       Receive emails about your account security.
-                                                   </FormDescription>
-                                               </div>
-                                               <FormControl>
-                                                   <Switch
-                                                       checked={field.value}
-                                                       onCheckedChange={field.onChange}
-                                                       disabled
-                                                       aria-readonly
-                                                   />
-                                               </FormControl>
-                                           </FormItem>
-                                       )}
-                                   />
-                               </form>
-                                <CardFooter className="border-t px-6 py-4">
-                                    <Button onClick={onSubmission}>Save</Button>
-                                    <div className={"mr-2"}/>
-                                    <Button variant={"outline"} onClick={goBack}>Cancel</Button>
-                                </CardFooter>
+                            <div className="m-10 grid grid-cols-2 gap-10">
+                                <Card>
+                                    <CardHeader>
+                                        <div className={"flex justify-between"}>
+                                            <h2>
+                                                MDL22CS150 | John Doe
+                                            </h2>
+                                            <Switch
+                                                id={"01"}
+                                            />
+                                        </div>
+                                    </CardHeader>
+                                </Card>
+
+                            </div>
+
+                            <CardFooter className="border-t px-6 py-4">
+                                <Button onClick={onSubmission}>Save</Button>
+                                <div className={"mr-2"}/>
+                                <Button variant={"outline"} onClick={goBack}>Cancel</Button>
+                            </CardFooter>
                         </Card>
                     </div>
                 </div>
             </main>
         </div>
-)
+    )
 }
