@@ -22,6 +22,10 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import React, {useEffect} from "react";
 import {Switch} from "@/components/ui/switch";
 import {useForm} from "react-hook-form";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {cn} from "@/lib/utils";
+import {Calendar} from "@/components/ui/calendar";
 
 
 export default function AddStaff() {
@@ -29,6 +33,19 @@ export default function AddStaff() {
     const [date, setDate] = React.useState<Date>()
     const [subject, setSubject] = React.useState("");
     const [classId, setClassId] = React.useState("");
+
+
+    const students = [
+        {id: "MDL22CS001", name: "John Doe"},
+        {id: "MDL22CS002", name: "Jane Doe"},
+        {id: "MDL22CS003", name: "John Smith"},
+        {id: "MDL22CS004", name: "Jane Smith"},
+        {id: "MDL22CS005", name: "John Doe"},
+    ]
+
+    const [attendance, setAttendance] = React.useState(
+        Array.from({length: students.length}, () => {return {id: "", name: "", present: false}})
+    );
 
     function onSubmission(){
         // later check if teacher has permission to add assignment
@@ -45,6 +62,17 @@ export default function AddStaff() {
         "CST202",
         "CST203",
     ]
+
+    function  toggleAttendance(index: number , id: string, name: string){
+        let newAttendance = [...attendance];
+        newAttendance[index].present = !newAttendance[index].present;
+        newAttendance[index].id = id;
+        newAttendance[index].name = name;
+        setAttendance(newAttendance);
+        console.log(date);
+    }
+
+
 
     function goBack(){
         window.history.back();
@@ -124,19 +152,78 @@ export default function AddStaff() {
                 <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[1fr] lg:grid-cols-[1fr]">
                     <div className="grid gap-6">
                         <Card x-chunk="dashboard-04-chunk-1">
+                            <div className="grid grid-cols-3 gap-6 m-10">
+                            {/*    select date*/}
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant={"outline"}
+                                            className={cn(
+                                                "w-[280px] justify-start text-left font-normal",
+                                                !date && "text-muted-foreground"
+                                            )}
+                                        >
+                                            <CalendarIcon className="mr-2 h-4 w-4" />
+                                            {date ? format(date, "PPP") : <span>Date of Birth</span>}
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-0">
+                                        <Calendar
+                                            mode="single"
+                                            selected={date}
+                                            onSelect={setDate}
+                                            initialFocus
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                                {/*    select subject*/}
+                                <Select onValueChange={(value) => setClassId(value)}>
+                                    <SelectTrigger className="w-[280px]">
+                                        <SelectValue placeholder="Class"/>
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {
+                                            classNames.map((className) => (
+                                                <SelectItem value={className} key={className}>{className}</SelectItem>
+                                            ))
+                                        }
+                                    </SelectContent>
+                                </Select>
+                                {/*    select class*/}
+                                <Select onValueChange={(value) => setSubject(value)}>
+                                    <SelectTrigger className="w-[280px]">
+                                        <SelectValue placeholder="Subject"/>
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {
+                                            subjectNames.map((subjectName) => (
+                                                <SelectItem value={subjectName} key={subjectName}>{subjectName}</SelectItem>
+                                            ))
+                                        }
+                                    </SelectContent>
+                                </Select>
+                            </div>
                             <div className="m-10 grid grid-cols-2 gap-10">
-                                <Card>
-                                    <CardHeader>
-                                        <div className={"flex justify-between"}>
-                                            <h2>
-                                                MDL22CS150 | John Doe
-                                            </h2>
-                                            <Switch
-                                                id={"01"}
-                                            />
-                                        </div>
-                                    </CardHeader>
-                                </Card>
+                                {
+                                    students.map((student, index) => {
+                                        return (
+                                            <Card id={index + student.id}>
+                                                <CardHeader>
+                                                    <div className={"flex justify-between"}>
+                                                        <h2>
+                                                            {student.id} | {student.name}
+                                                        </h2>
+                                                        <Switch
+                                                            id={"attendance" + index}
+                                                            checked={attendance[index].present}
+                                                            onCheckedChange={() => toggleAttendance(index, student.id, student.name)}
+                                                        />
+                                                    </div>
+                                                </CardHeader>
+                                            </Card>
+                                        )
+                                    })
+                                }
 
                             </div>
 
