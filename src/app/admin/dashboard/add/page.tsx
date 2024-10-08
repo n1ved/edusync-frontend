@@ -64,7 +64,6 @@ export default function AddStaff() {
            setClassInCharge(event);
        }
     }
-
     function onSubmission(){
         if (password != confirmPassword){
             alert("Passwords don't match");
