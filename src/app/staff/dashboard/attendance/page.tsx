@@ -152,7 +152,7 @@ export default function AddStaff() {
                 <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[1fr] lg:grid-cols-[1fr]">
                     <div className="grid gap-6">
                         <Card x-chunk="dashboard-04-chunk-1">
-                            <div className="grid grid-cols-3 gap-6 m-10">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 m-10">
                             {/*    select date*/}
                                 <Popover>
                                     <PopoverTrigger asChild>
@@ -203,7 +203,7 @@ export default function AddStaff() {
                                     </SelectContent>
                                 </Select>
                             </div>
-                            <div className="m-10 grid grid-cols-2 gap-10">
+                            <div className="m-10 grid grid-cols-1 sm:grid-cols-2 gap-10">
                                 {
                                     students.map((student, index) => {
                                         return (
