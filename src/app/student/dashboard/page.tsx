@@ -83,6 +83,51 @@ export default function Dashboard() {
         }
     ]
 
+    const completedAssignmentData = [
+        {
+            id: "1",
+            description: "Assignment 1",
+            course : "CST201",
+            from : "John Doe",
+            marks: "10/10"
+        },
+        {
+            id: "2",
+            description: "Assignment 2",
+            course : "CST201",
+            from : "John Doe",
+            marks: "10/10"
+        },
+        {
+            id: "3",
+            description: "Assignment 3",
+            course : "CST201",
+            from : "John Doe",
+            marks: "10/10"
+        },
+        {
+            id: "4",
+            description: "Assignment 4",
+            course : "CST201",
+            from : "John Doe",
+            marks: "10/10"
+        },
+        {
+            id: "5",
+            description: "Assignment 5",
+            course : "CST201",
+            from : "John Doe",
+            marks: "10/10"
+        },
+        {
+            id: "6",
+            description: "Assignment 6",
+            course : "CST201",
+            from : "John Doe",
+            marks: "10/10"
+        }
+    ]
+
     const scheduleData = [
         {
             day: "MON",
@@ -180,8 +225,8 @@ export default function Dashboard() {
                         </DropdownMenu>
                     </header>
                     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-                        <div className={"flex flex-col gap-4 justify-center align-top"}>
-                            <div className={"grid grid-cols-2 gap-4"}>
+                        <div className={"flex flex-col gap-4 justify-center align-top max-w-[92%] box-border"}>
+                            <div className={"grid grid-cols-1 sm:grid-cols-2 gap-4 box-border"}>
                                 <Card>
                                     <CardHeader>
                                         <CardTitle>Attendance</CardTitle>
@@ -254,34 +299,72 @@ export default function Dashboard() {
                                     <CardTitle>Assignments</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <Table>
-                                        <TableHeader>
-                                            <TableRow>
-                                                <TableHead>Description</TableHead>
-                                                <TableHead>Course</TableHead>
-                                                <TableHead>From</TableHead>
-                                                <TableHead>Due Date</TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                            {assignmentData.map((data) => (
-                                                <TableRow key={data.id}>
-                                                    <TableCell className="font-medium">
-                                                        {data.description}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        {data.course}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        {data.from}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        {data.dueDate}
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
+                                   <Tabs defaultValue={"upcoming"}>
+                                       <TabsList>
+                                           <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
+                                           <TabsTrigger value="completed">Completed</TabsTrigger>
+                                       </TabsList>
+                                       <TabsContent value={"upcoming"}>
+                                           <Table>
+                                               <TableHeader>
+                                                   <TableRow>
+                                                       <TableHead>Description</TableHead>
+                                                       <TableHead>Course</TableHead>
+                                                       <TableHead>From</TableHead>
+                                                       <TableHead>Due Date</TableHead>
+                                                   </TableRow>
+                                               </TableHeader>
+                                               <TableBody>
+                                                   {assignmentData.map((data) => (
+                                                       <TableRow key={data.id}>
+                                                           <TableCell className="font-medium">
+                                                               {data.description}
+                                                           </TableCell>
+                                                           <TableCell>
+                                                               {data.course}
+                                                           </TableCell>
+                                                           <TableCell>
+                                                               {data.from}
+                                                           </TableCell>
+                                                           <TableCell>
+                                                               {data.dueDate}
+                                                           </TableCell>
+                                                       </TableRow>
+                                                   ))}
+                                               </TableBody>
+                                           </Table>
+                                       </TabsContent>
+                                       <TabsContent value={"completed"}>
+                                           <Table>
+                                               <TableHeader>
+                                                   <TableRow>
+                                                       <TableHead>Description</TableHead>
+                                                       <TableHead>Course</TableHead>
+                                                       <TableHead>From</TableHead>
+                                                       <TableHead>Marks</TableHead>
+                                                   </TableRow>
+                                               </TableHeader>
+                                               <TableBody>
+                                                   {completedAssignmentData.map((data) => (
+                                                       <TableRow key={data.id}>
+                                                           <TableCell className="font-medium">
+                                                               {data.description}
+                                                           </TableCell>
+                                                           <TableCell>
+                                                               {data.course}
+                                                           </TableCell>
+                                                           <TableCell>
+                                                               {data.from}
+                                                           </TableCell>
+                                                           <TableCell>
+                                                               {data.marks}
+                                                           </TableCell>
+                                                       </TableRow>
+                                                   ))}
+                                               </TableBody>
+                                           </Table>
+                                       </TabsContent>
+                                   </Tabs>
                                 </CardContent>
                             </Card>
                         </div>
@@ -291,3 +374,4 @@ export default function Dashboard() {
         </TooltipProvider>
     )
 }
+
