@@ -62,6 +62,14 @@ export default function AddStaff() {
         "CST202",
         "CST203",
     ]
+    const hrs = [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+    ]
 
     function  toggleAttendance(index: number , id: string, name: string){
         let newAttendance = [...attendance];
@@ -152,19 +160,19 @@ export default function AddStaff() {
                 <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[1fr] lg:grid-cols-[1fr]">
                     <div className="grid gap-6">
                         <Card x-chunk="dashboard-04-chunk-1">
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 m-10">
+                            <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 m-10">
                             {/*    select date*/}
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <Button
                                             variant={"outline"}
                                             className={cn(
-                                                "w-[280px] justify-start text-left font-normal",
+                                                "w-[300px] sm:w-[200px] justify-start text-left font-normal",
                                                 !date && "text-muted-foreground"
                                             )}
                                         >
                                             <CalendarIcon className="mr-2 h-4 w-4" />
-                                            {date ? format(date, "PPP") : <span>Date of Birth</span>}
+                                            {date ? format(date, "PPP") : <span>Date</span>}
                                         </Button>
                                     </PopoverTrigger>
                                     <PopoverContent className="w-auto p-0">
@@ -178,7 +186,7 @@ export default function AddStaff() {
                                 </Popover>
                                 {/*    select subject*/}
                                 <Select onValueChange={(value) => setClassId(value)}>
-                                    <SelectTrigger className="w-[280px]">
+                                    <SelectTrigger className="w-[300px] sm:w-[200px]">
                                         <SelectValue placeholder="Class"/>
                                     </SelectTrigger>
                                     <SelectContent>
@@ -191,7 +199,7 @@ export default function AddStaff() {
                                 </Select>
                                 {/*    select class*/}
                                 <Select onValueChange={(value) => setSubject(value)}>
-                                    <SelectTrigger className="w-[280px]">
+                                    <SelectTrigger className="w-[300px] sm:w-[200px]">
                                         <SelectValue placeholder="Subject"/>
                                     </SelectTrigger>
                                     <SelectContent>
@@ -202,7 +210,26 @@ export default function AddStaff() {
                                         }
                                     </SelectContent>
                                 </Select>
+                            {/*    Select Hour*/}
+                                <Select onValueChange={(value) => setSubject(value)}>
+                                    <SelectTrigger className="w-[300px] sm:w-[200px]">
+                                        <SelectValue placeholder="Hour"/>
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {
+                                            hrs.map((subjectName) => (
+                                                <SelectItem value={subjectName} key={subjectName}>{subjectName}</SelectItem>
+                                            ))
+                                        }
+                                    </SelectContent>
+                                </Select>
+
                             </div>
+                        <div className="m-10 flex justify-center items-stretch">
+                            <Button>
+                                Search for entries
+                            </Button>
+                        </div>
                             <div className="m-10 grid grid-cols-1 sm:grid-cols-2 gap-10">
                                 {
                                     students.map((student, index) => {
