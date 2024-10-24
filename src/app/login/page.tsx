@@ -1,9 +1,10 @@
 import Image from "next/image"
-import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {TabsList, TabsTrigger , Tabs , TabsContent} from "@/components/ui/tabs";
+
 
 export default function Login() {
     return (
@@ -11,43 +12,49 @@ export default function Login() {
             <div className="flex items-center justify-center py-12">
                 <div className="mx-auto grid w-[350px] gap-6">
                     <div className="grid gap-2 text-center">
-                        <h1 className="text-3xl font-bold">Login</h1>
-                        <p className="text-balance text-muted-foreground">
-                            Enter your email below to login to your account
-                        </p>
+                        <h1 className="text-3xl font-bold">Login to EduSync</h1>
                     </div>
-                    <div className="grid gap-4">
-                        <div className="grid gap-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                placeholder="m@example.com"
-                                required
-                            />
+                    <Tabs defaultValue={"student"}>
+                        <div className={"w-full flex justify-center"}>
+                            <TabsList>
+                                <TabsTrigger value="student">Student</TabsTrigger>
+                                <TabsTrigger value="staff">Staff</TabsTrigger>
+                                <TabsTrigger value="admin">Admin</TabsTrigger>
+                            </TabsList>
                         </div>
-                        <div className="grid gap-2">
-                            <div className="flex items-center">
-                                <Label htmlFor="password">Password</Label>
-                                {/*<Link*/}
-                                {/*    href="/forgot-password"*/}
-                                {/*    className="ml-auto inline-block text-sm underline"*/}
-                                {/*>*/}
-                                {/*    Forgot your password?*/}
-                                {/*</Link>*/}
+                        <div className="grid gap-4">
+                            <div className="grid gap-2">
+                                <Label htmlFor="email">Username</Label>
+                                <Input
+                                    id="email"
+                                    type="text"
+                                    placeholder="Enter your ID"
+                                    required
+                                />
                             </div>
-                            <Input id="password" type="password" required />
+                            <div className="grid gap-2">
+                                <div className="flex items-center">
+                                    <Label htmlFor="password">Password</Label>
+                                </div>
+                                <Input id="password" type="password" required/>
+                            </div>
+                            <TabsContent value="student">
+                                <Button type="submit" className="w-full">
+                                    Login
+                                </Button>
+                            </TabsContent>
+                            <TabsContent value="staff">
+                                <Button type="submit" className="w-full">
+                                    Login
+                                </Button>
+                            </TabsContent>
+                            <TabsContent value="admin">
+                                <Button type="submit" className="w-full">
+                                    Login
+                                </Button>
+                            </TabsContent>
                         </div>
-                        <Button type="submit" className="w-full">
-                            Login
-                        </Button>
-                    </div>
-                    <div className="mt-4 text-center text-sm">
-                        Don&apos;t have an account?{" "}
-                        <Link href="#" className="underline">
-                            Sign up
-                        </Link>
-                    </div>
+                    </Tabs>
                 </div>
             </div>
             <div className="hidden bg-muted lg:block">
@@ -61,5 +68,5 @@ export default function Login() {
                 />
             </div>
         </div>
-    )
+)
 }

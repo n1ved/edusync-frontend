@@ -284,21 +284,7 @@ export default function Dashboard() {
                 <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
                     <Tabs defaultValue="all">
                         <div className="flex items-center">
-                            {/*<TabsList>*/}
-                            {/*    <TabsTrigger value="all">All</TabsTrigger>*/}
-                            {/*    <TabsTrigger value="active">Staff Advisors</TabsTrigger>*/}
-                            {/*</TabsList>*/}
-                            {/*<div className="ml-auto flex items-center gap-2">*/}
-                            {/*    <a href={"/admin/dashboard/add"}>*/}
-
-                            {/*        <Button size="sm" className="h-8 gap-1">*/}
-                            {/*            <PlusCircle className="h-3.5 w-3.5" />*/}
-                            {/*            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">*/}
-                            {/*            Add Staff*/}
-                            {/*        </span>*/}
-                            {/*        </Button>*/}
-                            {/*    </a>*/}
-                            {/*</div>*/}
+                           
                         </div>
                         <TabsContent value="all">
                             <Card x-chunk="dashboard-06-chunk-0">

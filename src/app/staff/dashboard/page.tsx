@@ -168,7 +168,7 @@ export default function Dashboard() {
                                 <TabsTrigger value="schedule">Schedule</TabsTrigger>
                                 <TabsTrigger value="assignment">Assignments</TabsTrigger>
                             </TabsList>
-                            <div className="ml-auto flex items-center gap-2 w-full justify-center m-2 sm:w-fit">
+                            <div className="ml-auto flex items-center gap-2 w-[92%] justify-center m-2 sm:w-fit">
                                 <a href={"/staff/dashboard/assignment"}>
                                     <Button size="sm" className="h-8 gap-1">
                                         <Paperclip className="h-3.5 w-3.5"/>
@@ -204,21 +204,6 @@ export default function Dashboard() {
                             </div>
                         </div>
                         <div className="flex items-center">
-                            {/*<TabsList>*/}
-                            {/*    <TabsTrigger value="all">All</TabsTrigger>*/}
-                            {/*    <TabsTrigger value="active">Staff Advisors</TabsTrigger>*/}
-                            {/*</TabsList>*/}
-                            {/*<div className="ml-auto flex items-center gap-2">*/}
-                            {/*    <a href={"/admin/dashboard/add"}>*/}
-
-                            {/*        <Button size="sm" className="h-8 gap-1">*/}
-                            {/*            <PlusCircle className="h-3.5 w-3.5" />*/}
-                            {/*            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">*/}
-                            {/*            Add Staff*/}
-                            {/*        </span>*/}
-                            {/*        </Button>*/}
-                            {/*    </a>*/}
-                            {/*</div>*/}
                         </div>
                         <TabsContent value="students">
                             <Card x-chunk="dashboard-06-chunk-0">
@@ -277,49 +262,45 @@ export default function Dashboard() {
                                 <CardHeader>
                                     <CardTitle>Daily Schedule</CardTitle>
                                 </CardHeader>
-                                <CardContent>
-                                    <Table>
-                                        <TableHeader>
-                                            <TableRow>
-                                                <TableHead>DAY</TableHead>
-                                                <TableHead>1</TableHead>
-                                                <TableHead>2</TableHead>
-                                                <TableHead>3</TableHead>
-                                                <TableHead>4</TableHead>
-                                                <TableHead>5</TableHead>
-                                                <TableHead>6</TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                            {
-                                                scheduleData.map((schedule, index) => (
-                                                    <TableRow
-                                                        key={index}
-                                                    >
-                                                        <TableCell>
-                                                            {schedule.day}
-                                                        </TableCell>
-                                                        {
-                                                            schedule.hrs.map((hour, index) => (
-                                                                <TableCell
-                                                                    key={index}
-                                                                >
-                                                                    {hour}
-                                                                </TableCell>
-                                                            ))
-                                                        }
-                                                    </TableRow>
-                                                ))
-                                            }
-                                        </TableBody>
-                                    </Table>
-                                </CardContent>
-                                {/*<CardFooter>*/}
-                                {/*    <div className="text-xs text-muted-foreground">*/}
-                                {/*        Showing <strong>1-10</strong> of <strong>32</strong>{" "}*/}
-
-                                {/*    </div>*/}
-                                {/*</CardFooter>*/}
+                                <div className="w-full">
+                                    <CardContent>
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow>
+                                                    <TableHead>DAY</TableHead>
+                                                    <TableHead>1</TableHead>
+                                                    <TableHead>2</TableHead>
+                                                    <TableHead>3</TableHead>
+                                                    <TableHead>4</TableHead>
+                                                    <TableHead>5</TableHead>
+                                                    <TableHead>6</TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {
+                                                    scheduleData.map((schedule, index) => (
+                                                        <TableRow
+                                                            key={index}
+                                                        >
+                                                            <TableCell>
+                                                                {schedule.day}
+                                                            </TableCell>
+                                                            {
+                                                                schedule.hrs.map((hour, index) => (
+                                                                    <TableCell
+                                                                        key={index}
+                                                                    >
+                                                                        {hour}
+                                                                    </TableCell>
+                                                                ))
+                                                            }
+                                                        </TableRow>
+                                                    ))
+                                                }
+                                            </TableBody>
+                                        </Table>
+                                    </CardContent>
+                                </div>
                             </Card>
                         </TabsContent>
                         <TabsContent value="assignment">
