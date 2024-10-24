@@ -32,11 +32,6 @@ export default function AddStaff() {
     const id = searchParams.get("id");
 
 
-    const [date, setDate] = React.useState<Date>()
-    const [subject, setSubject] = React.useState("");
-    const [classId, setClassId] = React.useState("");
-
-
     const students = [
         {id: "MDL22CS001", name: "John Doe"},
         {id: "MDL22CS002", name: "Jane Doe"},
@@ -45,7 +40,7 @@ export default function AddStaff() {
         {id: "MDL22CS005", name: "John Doe"},
     ]
 
-    const [attendance, setAttendance] = React.useState(
+    const [assignmentMarks, setAssignmentMarks] = React.useState(
         Array.from({length: students.length}, () => {return {id: "", name: "", marks: 0}})
     );
 
@@ -55,13 +50,12 @@ export default function AddStaff() {
 
 
 
-    function  toggleAttendance(index: number , id: string, name: string , marks: number){
-        let newAttendance = [...attendance];
-        newAttendance[index].marks = marks;
-        newAttendance[index].id = id;
-        newAttendance[index].name = name;
-        setAttendance(newAttendance);
-        console.log(date);
+    function  updateMarks(index: number , id: string, name: string , marks: number){
+        let newAssignmentMarks = [...assignmentMarks];
+        newAssignmentMarks[index].marks = marks;
+        newAssignmentMarks[index].id = id;
+        newAssignmentMarks[index].name = name;
+        setAssignmentMarks(newAssignmentMarks);
     }
 
 
@@ -157,7 +151,7 @@ export default function AddStaff() {
                                                         <Input
                                                             type={"number"}
                                                             placeholder={"Marks"}
-                                                            onChange={(e) => toggleAttendance(index, student.id, student.name, parseInt(e.target.value))}
+                                                            onChange={(e) => updateMarks(index, student.id, student.name, parseInt(e.target.value))}
                                                         />
                                                     </div>
                                                 </CardHeader>
