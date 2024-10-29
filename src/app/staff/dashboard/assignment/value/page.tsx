@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import Link from "next/link"
 import {CalendarIcon, CircleUser, Menu, Package2, Search} from "lucide-react"
 import { format } from "date-fns"
@@ -22,13 +22,14 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import React, {useEffect} from "react";
 import {Switch} from "@/components/ui/switch";
 import {Input} from "@/components/ui/input";
+import {useSearchParams} from "next/navigation";
 
 
 
-export default function AddStaff() {
+export default function ValueAssignment() {
 
-    //use searchParams to get attendance id
-    const searchParams = new URLSearchParams(window.location.search);
+    //use nextjs searchParams to get attendance id
+    const searchParams = useSearchParams();
     const id = searchParams.get("id");
 
 
@@ -61,7 +62,9 @@ export default function AddStaff() {
 
 
     function goBack(){
-        window.history.back();
+        if (typeof window !== "undefined") {
+            window.history.back();
+        }
     }
 
     return (
