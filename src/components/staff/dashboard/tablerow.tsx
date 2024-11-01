@@ -10,6 +10,7 @@ import {
 import {Button} from "@/components/ui/button";
 import {MoreHorizontal} from "lucide-react";
 import {list} from "postcss";
+import Link from "next/link";
 
 export default function TableRowDynamic(
     {
@@ -57,7 +58,9 @@ export default function TableRowDynamic(
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                    <Link href={"dashboard/editStudent?id=" + id}>
+                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                    </Link>
                     <DropdownMenuItem>Delete</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>

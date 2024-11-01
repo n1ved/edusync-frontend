@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import Link from "next/link"
 import {CalendarIcon, CircleUser, Menu, Package2, Search} from "lucide-react"
 import { format } from "date-fns"
@@ -24,17 +24,20 @@ import React, {useEffect} from "react";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Calendar} from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
+import {useSearchParams} from "next/navigation";
 
 
-export default function AddStaff() {
+export default function EditStudent() {
 
     const [date, setDate] = React.useState<Date>()
-    const [id,setID] = React.useState("");
     const [name, setName] = React.useState("");
     const [phone, setPhone] = React.useState("");
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
+
+    const searchParams = useSearchParams();
+    const id = searchParams.get("id");
 
 
     function onSubmission(){
@@ -118,21 +121,18 @@ export default function AddStaff() {
             </header>
             <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
                 <div className="mx-auto grid w-full max-w-6xl gap-2">
-                    <h1 className="text-3xl font-semibold">Add New Student</h1>
+                    <h1 className="text-3xl font-semibold">Editing Student <span className="text-primary">{id}</span> </h1>
                 </div>
                 <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[1fr] lg:grid-cols-[1fr]">
                     <div className="grid gap-6">
                         <Card x-chunk="dashboard-04-chunk-1">
                             <CardHeader>
-                                <CardTitle>Enter Details</CardTitle>
+                                <CardTitle>Edit Details</CardTitle>
                                 <CardDescription>
                                     Columns marked with * are required
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <form>
-                                    <Input placeholder="Student ID" onChange={(event) => setID(event.target.value)}/>
-                                </form>
                                 <div className={"mt-4"}/>
                                 <form>
                                     <Input placeholder="Name" onChange={(event) => setName(event.target.value)}/>
@@ -165,23 +165,6 @@ export default function AddStaff() {
                                             />
                                         </PopoverContent>
                                     </Popover>
-                                </form>
-                                <div className={"mt-4"}/>
-                                <h3 className={"text-lg font-semibold text-muted-foreground"}>Credentials</h3>
-                                <div className={"mt-2"}/>
-                                <form>
-                                    <Input placeholder="Create a username"
-                                           onChange={(event) => setUsername(event.target.value)}/>
-                                </form>
-                                <div className={"mt-4"}/>
-                                <form>
-                                    <Input type="password" placeholder="Create a password"
-                                           onChange={(event) => setPassword(event.target.value)}/>
-                                </form>
-                                <div className={"mt-4"}/>
-                                <form>
-                                    <Input type="password" placeholder="confirm password"
-                                           onChange={(event) => setConfirmPassword(event.target.value)}/>
                                 </form>
 
                             </CardContent>

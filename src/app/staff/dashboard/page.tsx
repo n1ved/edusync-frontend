@@ -354,11 +354,11 @@ export default function Dashboard() {
                                                                 </DropdownMenuTrigger>
                                                                 <DropdownMenuContent align="end">
                                                                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                                    <DropdownMenuItem>
-                                                                        <Link href={"/staff/dashboard/assignment/value?id=" + assignment.id}>
-                                                                            Value
-                                                                        </Link>
-                                                                    </DropdownMenuItem>
+                                                                    <Link href={"/staff/dashboard/assignment/value?id=" + assignment.id}>
+                                                                        <DropdownMenuItem>
+                                                                                Value
+                                                                        </DropdownMenuItem>
+                                                                    </Link>
                                                                     <DropdownMenuItem>Delete</DropdownMenuItem>
                                                                 </DropdownMenuContent>
                                                             </DropdownMenu>
