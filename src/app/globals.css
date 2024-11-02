@@ -58,4 +58,10 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+  .font-outline-2 {
+    -webkit-text-stroke: 2px white;
+  }
+  .font-outline-4 {
+    -webkit-text-stroke: 4px black;
+  }
 }
