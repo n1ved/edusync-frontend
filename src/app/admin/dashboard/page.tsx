@@ -1,3 +1,4 @@
+'use client'
 import Image from "next/image"
 import Link from "next/link"
 import { TooltipProvider } from "@radix-ui/react-tooltip";
@@ -34,8 +35,14 @@ import {
     TabsContent,
 } from "@/components/ui/tabs"
 import TableRowDynamic from "@/components/admin/dashboard/tablerow";
+import { useEffect } from "react";
+import { ApiWorker } from "@/app/_api/api_worker";
 
 export default function Dashboard() {
+
+    useEffect(() => {
+        console.log(ApiWorker.sayHello());
+    });
 
 
     const staffData = [
