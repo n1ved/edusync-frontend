@@ -1,12 +1,10 @@
-import Image from "next/image"
-//Import space grotesk font from google fonts nextjs
-import {Space_Grotesk} from "next/font/google";
+
+import {Quicksand} from "next/font/google";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {TabsList, TabsTrigger , Tabs , TabsContent} from "@/components/ui/tabs";
-import {Space} from "lucide-react";
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
+const quickSand = Quicksand({ subsets: ["latin"] });
 
 export default function Login() {
     return (
@@ -60,8 +58,8 @@ export default function Login() {
                 </div>
             </div>
             <div className="h-full lg:block flex flex-row bg-primary justify-center">
-                <div className={"h-[100vh] w-[50vw] bg-primary text-secondary text-8xl m-0 p-5 font-extrabold flex flex-col justify-center"}>
-                    <div className={spaceGrotesk.className}>
+                <div className={"h-[100vh] w-[50vw] bg-primary text-secondary text-8xl m-0 p-5 font-extrabold flex flex-col justify-center max-sm:hidden"}>
+                    <div className={quickSand.className}>
                         <h2 className={"font-outline-2 text-primary"}>Welcome</h2>
                         <h3 className={"font-outline-2 text-primary"}>to</h3>
                         <h2 className={"text-9xl"}>Edusync</h2>
