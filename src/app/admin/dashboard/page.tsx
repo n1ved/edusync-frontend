@@ -1,6 +1,7 @@
 'use client'
 import Image from "next/image"
 import Link from "next/link"
+import { useState } from "react";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 
 import {
@@ -40,76 +41,112 @@ import { ApiWorker } from "@/app/_api/api_worker";
 
 export default function Dashboard() {
 
-    useEffect(() => {
-        console.log(ApiWorker.sayHello());
-    });
-
-
-    const staffData = [
-        {
-            name: "John Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
-        },
-        {
-            name: "Jane Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
-        },
-        {
-            name: "John Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
-        },
-        {
-            name: "Jane Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
-        },
-        {
-            name: "John Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
-        },
-        {
-            name: "Jane Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
-        },
-        {
-            name: "John Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
-        },
-        {
-            name: "Jane Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
-        },
-        {
-            name: "John Doe",
-            chargeOf: "CS7A",
-            courses: ["CST101", "CST202"],
-            classes: ["CS5C", "CS3A"],
-            createdAt: "2021-10-01",
+    function convertStaffData(staffItem : any) {
+        const allClasses = Array.from(
+            new Set(Object.values(staffItem.course_charges).flat())
+        );
+    
+        return {
+            name: staffItem.name,
+            chargeOf: staffItem.in_charge_of,
+            courses: Object.keys(staffItem.course_charges),
+            classes: allClasses,
+            createdAt: '2021-10-01'
         }
-    ]
+    }
+    
+    
+
+
+    //Asyncnously call a function
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await ApiWorker.viewStaff(document.cookie);
+            let unprocessedData = response.data;
+            for(let i = 0; i < unprocessedData.length; i++) {
+                unprocessedData[i] = convertStaffData(unprocessedData[i]);
+            }
+            setStaffData(unprocessedData);
+            console.log(response.data);
+        }
+        console.log(document.cookie);
+        fetchData();
+    }, []);
+
+    const [staffData, setStaffData] = useState([
+        {
+                    name: "John Doe",
+                    chargeOf: "CS7A",
+                    courses: ["CST101", "CST202"],
+                    classes: ["CS5C", "CS3A"],
+                    createdAt: "2021-10-01",
+            },
+    ]);
+    // const staffData = [
+    //     {
+    //         name: "John Doe",
+    //         chargeOf: "CS7A",
+    //         courses: ["CST101", "CST202"],
+    //         classes: ["CS5C", "CS3A"],
+    //         createdAt: "2021-10-01",
+    //     },
+    //     {
+    //         name: "Jane Doe",
+    //         chargeOf: "CS7A",
+    //         courses: ["CST101", "CST202"],
+    //         classes: ["CS5C", "CS3A"],
+    //         createdAt: "2021-10-01",
+    //     },
+    //     {
+    //         name: "John Doe",
+    //         chargeOf: "CS7A",
+    //         courses: ["CST101", "CST202"],
+    //         classes: ["CS5C", "CS3A"],
+    //         createdAt: "2021-10-01",
+    //     },
+    //     {
+    //         name: "Jane Doe",
+    //         chargeOf: "CS7A",
+    //         courses: ["CST101", "CST202"],
+    //         classes: ["CS5C", "CS3A"],
+    //         createdAt: "2021-10-01",
+    //     },
+    //     {
+    //         name: "John Doe",
+    //         chargeOf: "CS7A",
+    //         courses: ["CST101", "CST202"],
+    //         classes: ["CS5C", "CS3A"],
+    //         createdAt: "2021-10-01",
+    //     },
+    //     {
+    //         name: "Jane Doe",
+    //         chargeOf: "CS7A",
+    //         courses: ["CST101", "CST202"],
+    //         classes: ["CS5C", "CS3A"],
+    //         createdAt: "2021-10-01",
+    //     },
+    //     {
+    //         name: "John Doe",
+    //         chargeOf: "CS7A",
+    //         courses: ["CST101", "CST202"],
+    //         classes: ["CS5C", "CS3A"],
+    //         createdAt: "2021-10-01",
+    //     },
+    //     {
+    //         name: "Jane Doe",
+    //         chargeOf: "CS7A",
+    //         courses: ["CST101", "CST202"],
+    //         classes: ["CS5C", "CS3A"],
+    //         createdAt: "2021-10-01",
+    //     },
+    //     {
+    //         name: "John Doe",
+    //         chargeOf: "CS7A",
+    //         courses: ["CST101", "CST202"],
+    //         classes: ["CS5C", "CS3A"],
+    //         createdAt: "2021-10-01",
+    //     }
+    // ]
 
     return (
         <TooltipProvider>
@@ -189,13 +226,14 @@ export default function Dashboard() {
                                         </TableHeader>
                                         <TableBody>
                                             {
+                                                staffData.length > 0 &&
                                                 staffData.map((staff, index) => (
                                                     <TableRowDynamic
                                                         name={staff.name}
                                                         chargeOf={staff.chargeOf}
                                                         courses={staff.courses}
                                                         classes={staff.classes}
-                                                        createdAt={staff.createdAt}
+                                                        createdAt={""}
                                                         key={index}
                                                     />
                                                 ))

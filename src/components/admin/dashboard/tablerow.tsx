@@ -37,14 +37,18 @@ export default function TableRowDynamic(
             </Badge>
         </TableCell>
         <TableCell className="hidden md:table-cell">
-            {courses.map((course) => (
+            {
+            courses.length >= 0 &&
+            courses.map((course) => (
                 <Badge key={course} variant="secondary">
                     {course}
                 </Badge>
             ))}
         </TableCell>
         <TableCell className="hidden md:table-cell">
-            {classes.map((classes) => (
+            {
+            classes.length >= 0 &&
+            classes.map((classes) => (
                 <Badge key={classes } variant="secondary">
                     {classes}
                 </Badge>

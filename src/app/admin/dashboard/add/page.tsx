@@ -76,6 +76,13 @@ export default function AddStaff() {
         console.log(classes);
         console.log(username);
         console.log(password);
+        const data = {
+            "name": name,
+            "in-charge-of": classInCharge,
+            
+            "username": username,
+            "password": password,
+        }
     }
 
     function goBack(){

@@ -1,12 +1,26 @@
-
+'use client'
+import {useState} from "react";
 import {Quicksand} from "next/font/google";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {TabsList, TabsTrigger , Tabs , TabsContent} from "@/components/ui/tabs";
+import { ApiWorker } from "../_api/api_worker";
 const quickSand = Quicksand({ subsets: ["latin"] });
 
 export default function Login() {
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    function handleAdminLogin() {
+        ApiWorker.admin_login(username, password).then((response) => {
+            document.cookie = `${response.data.token}`;
+            if(response.status === 200) {
+                window.location.href = "/admin/dashboard";
+            }
+        });
+    }
     return (
         <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[910px]">
             <div className="flex items-center justify-center py-12">
@@ -30,13 +44,14 @@ export default function Login() {
                                     type="text"
                                     placeholder="Enter your ID"
                                     required
+                                    onChange={(e) => setUsername(e.target.value)}
                                 />
                             </div>
                             <div className="grid gap-2">
                                 <div className="flex items-center">
                                     <Label htmlFor="password">Password</Label>
                                 </div>
-                                <Input id="password" type="password" required/>
+                                <Input id="password" type="password" required onChange={(e) => setPassword(e.target.value)}/>
                             </div>
                             <TabsContent value="student">
                                 <Button type="submit" className="w-full">
@@ -49,7 +64,7 @@ export default function Login() {
                                 </Button>
                             </TabsContent>
                             <TabsContent value="admin">
-                                <Button type="submit" className="w-full">
+                                <Button type="submit" className="w-full" onClick={handleAdminLogin}>
                                     Login
                                 </Button>
                             </TabsContent>
