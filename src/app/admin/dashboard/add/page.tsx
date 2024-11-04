@@ -36,6 +36,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import React, {useEffect} from "react";
+import { ApiWorker } from "@/app/_api/api_worker";
 
 
 export default function AddStaff() {
@@ -110,20 +111,23 @@ export default function AddStaff() {
             setPassword("");
             setConfirmPassword("");
         }
-        console.log(name);
-        console.log(classInCharge);
-        console.log(className);
-        console.log(classes);
-        console.log(username);
-        console.log(password);
-        console.log(getFinalFormat());
+        // console.log(name);
+        // console.log(classInCharge);
+        // console.log(className);
+        // console.log(classes);
+        // console.log(username);
+        // console.log(password);
+        // console.log(getFinalFormat());
         const data = {
             "name": name,
-            "in-charge-of": classInCharge,
-            
-            "username": username,
+            // "in-charge-of": classInCharge,
+            "course_charges": getFinalFormat(),
             "password": password,
         }
+        console.log(data)
+        ApiWorker.addStaff(document.cookie,data).then((response) => {
+            console.log(response);
+        });
     }
 
     function goBack(){
@@ -286,11 +290,6 @@ export default function AddStaff() {
                                 >
                                     Add More Class
                                 </Button>
-                                <div className={"mt-4"}/>
-                                <form>
-                                    <Input placeholder="Create a username"
-                                           onChange={(event) => setUsername(event.target.value)}/>
-                                </form>
                                 <div className={"mt-4"}/>
                                 <h3 className={"text-lg font-semibold text-muted-foreground"}>Credentials</h3>
                                 <div className={"mt-2"}/>

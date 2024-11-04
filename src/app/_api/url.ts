@@ -2,10 +2,10 @@ export class APIUrls {
   public static readonly BASE_URL = 'http://localhost:3600';
 
 	//ADMIN
-  public static readonly ADMIN_BASE_URL = `${APIUrls.BASE_URL}/admin`;
+  	public static readonly ADMIN_BASE_URL = `${APIUrls.BASE_URL}/admin`;
 
-  public static readonly ADMIN_LOGIN = `${APIUrls.ADMIN_BASE_URL}/login`;
-  public static readonly ADMIN_SIGNUP = `${APIUrls.ADMIN_BASE_URL}/signup`;
+  	public static readonly ADMIN_LOGIN = `${APIUrls.ADMIN_BASE_URL}/login`;
+  	public static readonly ADMIN_SIGNUP = `${APIUrls.ADMIN_BASE_URL}/signup`;
 
 	public static readonly ADMIN_ADD_STAFF = `${APIUrls.ADMIN_BASE_URL}/addStaff`;
 	public static readonly ADMIN_VIEW_STAFF = `${APIUrls.ADMIN_BASE_URL}/viewStaff`;
