@@ -50,6 +50,46 @@ export default function AddStaff() {
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
 
+    const [courseData, setCourseData] = React.useState({});
+    const [numOfClasses, setNumOfClasses] = React.useState(1);
+
+    const handleInputChange = (index:number, field:string, value:any) => {
+        setCourseData(prevData => {
+            const newData = { ...prevData };
+
+            if (field === 'course') {
+                // Get the existing classes for this index or empty array
+                // @ts-ignore
+                const classes = newData[`course${index}`]?.classes || [];
+                // @ts-ignore
+                newData[`course${index}`] = {
+                    name: value,
+                    classes: classes
+                };
+            } else if (field === 'classes') {
+                // Get the existing course name or empty string
+                // @ts-ignore
+                const courseName = newData[`course${index}`]?.name || '';
+                // @ts-ignore
+                newData[`course${index}`] = {
+                    name: courseName,
+                    classes: value.split(',').map(cls => cls.trim())
+                };
+            }
+            return newData;
+        });
+    };
+    const getFinalFormat = () => {
+        const finalData = {};
+        Object.values(courseData).forEach(course => {
+            // @ts-ignore
+            if (course.name) {
+                // @ts-ignore
+                finalData[course.name] = course.classes;
+            }
+        });
+        return finalData;
+    };
 
     const availableClasses = {
         "2026": ["CS26A", "CS26B", "CS26C"],
@@ -76,6 +116,7 @@ export default function AddStaff() {
         console.log(classes);
         console.log(username);
         console.log(password);
+        console.log(getFinalFormat());
         const data = {
             "name": name,
             "in-charge-of": classInCharge,
@@ -92,12 +133,13 @@ export default function AddStaff() {
     return (
         <div className="flex min-h-screen w-full flex-col">
             <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-                <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+                <nav
+                    className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
                     <Link
                         href="#"
                         className="flex items-center gap-2 text-lg font-semibold md:text-base"
                     >
-                        <Package2 className="h-6 w-6" />
+                        <Package2 className="h-6 w-6"/>
                         <span className="sr-only">Acme Inc</span>
                     </Link>
                     <Link
@@ -115,7 +157,7 @@ export default function AddStaff() {
                             size="icon"
                             className="shrink-0 md:hidden"
                         >
-                            <Menu className="h-5 w-5" />
+                            <Menu className="h-5 w-5"/>
                             <span className="sr-only">Toggle navigation menu</span>
                         </Button>
                     </SheetTrigger>
@@ -125,7 +167,7 @@ export default function AddStaff() {
                                 href="#"
                                 className="flex items-center gap-2 text-lg font-semibold"
                             >
-                                <Package2 className="h-6 w-6" />
+                                <Package2 className="h-6 w-6"/>
                                 <span className="sr-only">Acme Inc</span>
                             </Link>
                             <Link
@@ -146,7 +188,7 @@ export default function AddStaff() {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="secondary" size="icon" className="rounded-full">
-                                <CircleUser className="h-5 w-5" />
+                                <CircleUser className="h-5 w-5"/>
                                 <span className="sr-only">Toggle user menu</span>
                             </Button>
                         </DropdownMenuTrigger>
@@ -156,7 +198,8 @@ export default function AddStaff() {
                     </DropdownMenu>
                 </div>
             </header>
-            <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
+            <main
+                className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
                 <div className="mx-auto grid w-full max-w-6xl gap-2">
                     <h1 className="text-3xl font-semibold">Add New Staff</h1>
                 </div>
@@ -192,7 +235,8 @@ export default function AddStaff() {
                                                                 // @ts-ignore
                                                                 availableClasses[year].map((class_name) => {
                                                                     return (
-                                                                        <SelectItem value={class_name} key={class_name}>{class_name}</SelectItem>
+                                                                        <SelectItem value={class_name}
+                                                                                    key={class_name}>{class_name}</SelectItem>
                                                                     )
                                                                 })
                                                             }
@@ -207,26 +251,62 @@ export default function AddStaff() {
                                 {
                                     newClassCreation &&
                                     <form>
-                                        <Input placeholder="Class Name" onChange={(event) => setClassName(event.target.value)}/>
+                                        <Input placeholder="Class Name"
+                                               onChange={(event) => setClassName(event.target.value)}/>
                                     </form>
                                 }
                                 <div className={"mt-4"}/>
+                                <h3 className={"text-lg font-semibold text-muted-foreground"}>
+                                    Classes and Courses
+                                </h3>
                                 <form>
-                                    <Input placeholder="Classes and Subjects taught seperated by comma" onChange={(event) => setClasses(event.target.value)}/>
+                                    {Array.from({length: numOfClasses}, (_, i) => i).map((index) => (
+                                        <div className={"grid gap-5 grid-cols-7 mt-4"} key={index}>
+                                            <div className={"col-span-2"}>
+                                                <Input
+                                                    placeholder={"Course"}
+                                                    onChange={(e) => handleInputChange(index, 'course', e.target.value)}
+                                                    value={courseData[`course${index}`]?.name || ''}
+                                                />
+                                            </div>
+                                            <div className={"col-span-4"}>
+                                                <Input
+                                                    placeholder={"Enter classes separated by commas"}
+                                                    onChange={(e) => handleInputChange(index, 'classes', e.target.value)}
+                                                    value={courseData[`course${index}`]?.classes?.join(', ') || ''}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </form>
+                                <div className={"mt-4"}/>
+                                <Button
+                                    onClick={() => setNumOfClasses(numOfClasses + 1)}
+                                    variant={"outline"}
+                                >
+                                    Add More Class
+                                </Button>
+                                <div className={"mt-4"}/>
+                                <form>
+                                    <Input placeholder="Create a username"
+                                           onChange={(event) => setUsername(event.target.value)}/>
                                 </form>
                                 <div className={"mt-4"}/>
                                 <h3 className={"text-lg font-semibold text-muted-foreground"}>Credentials</h3>
                                 <div className={"mt-2"}/>
                                 <form>
-                                    <Input placeholder="Create a username" onChange={(event) => setUsername(event.target.value)}/>
+                                    <Input placeholder="Create a username"
+                                           onChange={(event) => setUsername(event.target.value)}/>
                                 </form>
                                 <div className={"mt-4"}/>
                                 <form>
-                                    <Input type="password" placeholder="Create a password" onChange={(event) => setPassword(event.target.value)}/>
+                                    <Input type="password" placeholder="Create a password"
+                                           onChange={(event) => setPassword(event.target.value)}/>
                                 </form>
                                 <div className={"mt-4"}/>
                                 <form>
-                                    <Input type="password" placeholder="confirm password" onChange={(event) => setConfirmPassword(event.target.value)}/>
+                                    <Input type="password" placeholder="confirm password"
+                                           onChange={(event) => setConfirmPassword(event.target.value)}/>
                                 </form>
 
                             </CardContent>
