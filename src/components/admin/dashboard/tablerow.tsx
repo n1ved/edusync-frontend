@@ -8,17 +8,19 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
-import {MoreHorizontal} from "lucide-react";
+import {Link, MoreHorizontal} from "lucide-react";
 import {list} from "postcss";
 
 export default function TableRowDynamic(
     {
+        id,
         name,
         chargeOf,
         courses,
         classes,
         createdAt
     }: {
+        id:number,
         name: string,
         chargeOf: string,
         courses: string[],
@@ -27,6 +29,8 @@ export default function TableRowDynamic(
     }
 
 ){
+
+    const url = "/admin/dashboard/add?update="+id;
     return( <TableRow>
         <TableCell className="font-medium">
             {name}
@@ -71,7 +75,9 @@ export default function TableRowDynamic(
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                    <a href={url}>
+                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                    </a>
                     <DropdownMenuItem>Delete</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>

@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link"
+import { useSearchParams } from "next/navigation";
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -28,13 +29,66 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import React, {useEffect} from "react";
+import React, {use, useEffect} from "react";
 import { ApiWorker } from "@/app/_api/api_worker";
 
 
 export default function AddStaff() {
 
     const [newClassCreation , setNewClassCreation] = React.useState(false);
+
+    const searchParams = useSearchParams();
+    const search = searchParams.get('update');
+    const [editMode , setEditMode] = React.useState(false);
+
+    function convertBackendToFrontend(backendData:any) {
+        // Get unique classes from all course_charges arrays
+        const allClasses = Array.from(
+            new Set(
+                Object.values(backendData.course_charges)
+                    .flat()
+            )
+        );
+        setNumOfClasses(Object.keys(backendData.course_charges).length);
+        return {
+            name: backendData.name,
+            chargeOf: backendData.in_charge_of,
+            courses: Object.keys(backendData.course_charges),
+            classes: allClasses,
+        }
+    }
+    
+
+    if(search !== null){
+        const searchData = {
+            staff_no : search
+        }
+        useEffect(() => {
+            const fetchData = async () => {
+                ApiWorker.editStaff(document.cookie,searchData).then((response) => {
+                    if(response.status == 200){
+                        setEditMode(true);
+                    }
+                    console.log(response.data.staffDetails);
+                    const data = response.data.staffDetails;
+                    const frontendData = convertBackendToFrontend(data);
+                    setName(frontendData.name);
+                    setClassInCharge(frontendData.chargeOf);
+                    const formattedCourseData = {};
+                    Object.entries(data.course_charges).forEach(([course, classes], index) => {
+                        formattedCourseData[`course${index}`] = {
+                            name: course,
+                            classes: classes // Use the specific classes for each course
+                        };
+                    });
+                    
+                    setCourseData(formattedCourseData);
+                    
+                });
+            }
+            fetchData();
+        },[]);
+    }
 
     const [name, setName] = React.useState("");
     const [classInCharge, setClassInCharge] = React.useState("");
@@ -110,10 +164,23 @@ export default function AddStaff() {
             "course_charges": getFinalFormat(),
             "password": password,
         }
+        const updateData = {
+            "staff_no": parseInt(search!),
+            "name": name,
+            "in-charge-of": classInCharge == "nocharge" ? "": classInCharge,
+            "course_charges": getFinalFormat(),
+        }
+        console.log(updateData.staff_no)
         console.log(data)
-        ApiWorker.addStaff(document.cookie,data).then((response) => {
-            console.log(response);
-        });
+        if(editMode){
+            ApiWorker.editStaff(document.cookie,updateData).then((response) => {
+                console.log(response);
+            });
+        }else{
+            ApiWorker.addStaff(document.cookie,data).then((response) => {
+                console.log(response);
+            });
+        }
     }
 
     function goBack(){
@@ -204,13 +271,13 @@ export default function AddStaff() {
                             </CardHeader>
                             <CardContent>
                                 <form>
-                                    <Input placeholder="Name" onChange={(event) => setName(event.target.value)}/>
+                                    <Input placeholder="Name" onChange={(event) => setName(event.target.value)} value={editMode?name:""}/>
                                 </form>
                                 <div className={"mt-4"}/>
                                 <form>
                                     <Select onValueChange={(value) => handleClassInChargeChange(value)}>
                                         <SelectTrigger className="w-[280px]">
-                                            <SelectValue placeholder="Class of Charge"/>
+                                            <SelectValue placeholder={editMode ? classInCharge : "Class of Charge"}/>
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value={"nocharge"}>No Class In Charge</SelectItem>
@@ -276,27 +343,39 @@ export default function AddStaff() {
                                 >
                                     Add More Class
                                 </Button>
-                                <div className={"mt-4"}/>
-                                <h3 className={"text-lg font-semibold text-muted-foreground"}>Credentials</h3>
-                                <div className={"mt-2"}/>
-                                <form>
-                                    <Input placeholder="Create a username"
-                                           onChange={(event) => setUsername(event.target.value)}/>
-                                </form>
-                                <div className={"mt-4"}/>
-                                <form>
-                                    <Input type="password" placeholder="Create a password"
-                                           onChange={(event) => setPassword(event.target.value)}/>
-                                </form>
-                                <div className={"mt-4"}/>
-                                <form>
-                                    <Input type="password" placeholder="confirm password"
-                                           onChange={(event) => setConfirmPassword(event.target.value)}/>
-                                </form>
+                               {
+                                !editMode &&
+                                <>
+                                     <div className={"mt-4"}/>
+                                    <h3 className={"text-lg font-semibold text-muted-foreground"}>Credentials</h3>
+                                    <div className={"mt-2"}/>
+                                    <form>
+                                        <Input placeholder="Create a username"
+                                            onChange={(event) => setUsername(event.target.value)}/>
+                                    </form>
+                                    <div className={"mt-4"}/>
+                                    <form>
+                                        <Input type="password" placeholder="Create a password"
+                                            onChange={(event) => setPassword(event.target.value)}/>
+                                    </form>
+                                    <div className={"mt-4"}/>
+                                    <form>
+                                        <Input type="password" placeholder="confirm password"
+                                            onChange={(event) => setConfirmPassword(event.target.value)}/>
+                                    </form>
+                                </>
+                               }
 
                             </CardContent>
                             <CardFooter className="border-t px-6 py-4">
-                                <Button onClick={onSubmission}>Save</Button>
+                                {
+                                    editMode &&
+                                    <Button onClick={onSubmission}>Update</Button>
+                                }
+                                {
+                                    !editMode &&
+                                    <Button onClick={onSubmission}>Add Staff</Button>
+                                }
                                 <div className={"mr-2"}/>
                                 <Button variant={"outline"} onClick={goBack}>Cancel</Button>
                             </CardFooter>

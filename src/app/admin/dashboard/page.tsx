@@ -47,6 +47,7 @@ export default function Dashboard() {
         );
     
         return {
+            id : staffItem.staff_no,
             name: staffItem.name,
             chargeOf: staffItem.in_charge_of,
             courses: Object.keys(staffItem.course_charges),
@@ -75,6 +76,7 @@ export default function Dashboard() {
 
     const [staffData, setStaffData] = useState([
         {
+                    id: 1,
                     name: "John Doe",
                     chargeOf: "CS7A",
                     courses: ["CST101", "CST202"],
@@ -82,71 +84,6 @@ export default function Dashboard() {
                     createdAt: "2021-10-01",
             },
     ]);
-    // const staffData = [
-    //     {
-    //         name: "John Doe",
-    //         chargeOf: "CS7A",
-    //         courses: ["CST101", "CST202"],
-    //         classes: ["CS5C", "CS3A"],
-    //         createdAt: "2021-10-01",
-    //     },
-    //     {
-    //         name: "Jane Doe",
-    //         chargeOf: "CS7A",
-    //         courses: ["CST101", "CST202"],
-    //         classes: ["CS5C", "CS3A"],
-    //         createdAt: "2021-10-01",
-    //     },
-    //     {
-    //         name: "John Doe",
-    //         chargeOf: "CS7A",
-    //         courses: ["CST101", "CST202"],
-    //         classes: ["CS5C", "CS3A"],
-    //         createdAt: "2021-10-01",
-    //     },
-    //     {
-    //         name: "Jane Doe",
-    //         chargeOf: "CS7A",
-    //         courses: ["CST101", "CST202"],
-    //         classes: ["CS5C", "CS3A"],
-    //         createdAt: "2021-10-01",
-    //     },
-    //     {
-    //         name: "John Doe",
-    //         chargeOf: "CS7A",
-    //         courses: ["CST101", "CST202"],
-    //         classes: ["CS5C", "CS3A"],
-    //         createdAt: "2021-10-01",
-    //     },
-    //     {
-    //         name: "Jane Doe",
-    //         chargeOf: "CS7A",
-    //         courses: ["CST101", "CST202"],
-    //         classes: ["CS5C", "CS3A"],
-    //         createdAt: "2021-10-01",
-    //     },
-    //     {
-    //         name: "John Doe",
-    //         chargeOf: "CS7A",
-    //         courses: ["CST101", "CST202"],
-    //         classes: ["CS5C", "CS3A"],
-    //         createdAt: "2021-10-01",
-    //     },
-    //     {
-    //         name: "Jane Doe",
-    //         chargeOf: "CS7A",
-    //         courses: ["CST101", "CST202"],
-    //         classes: ["CS5C", "CS3A"],
-    //         createdAt: "2021-10-01",
-    //     },
-    //     {
-    //         name: "John Doe",
-    //         chargeOf: "CS7A",
-    //         courses: ["CST101", "CST202"],
-    //         classes: ["CS5C", "CS3A"],
-    //         createdAt: "2021-10-01",
-    //     }
-    // ]
 
     return (
         <TooltipProvider>
@@ -229,6 +166,7 @@ export default function Dashboard() {
                                                 staffData.length > 0 &&
                                                 staffData.map((staff, index) => (
                                                     <TableRowDynamic
+                                                        id = {staff.id}
                                                         name={staff.name}
                                                         chargeOf={staff.chargeOf}
                                                         courses={staff.courses}

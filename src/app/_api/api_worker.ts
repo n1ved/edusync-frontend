@@ -62,4 +62,18 @@ export class ApiWorker {
     const response = axios.request(options);
     return response;
   }
+
+  public static async editStaff(token: string, data: any) {
+    const options = {
+      method: 'PUT',
+      url: APIUrls.ADMIN_EDIT_STAFF,
+      headers: {
+        Authorization: 'Bearer '+token,
+        'content-type': 'application/json'
+      },
+      data: data
+    };
+    const response = axios.request(options);
+    return response;
+  }
 }
