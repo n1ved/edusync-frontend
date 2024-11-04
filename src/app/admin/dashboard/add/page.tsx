@@ -12,10 +12,6 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import {
-    ToggleGroup,
-    ToggleGroupItem,
-} from "@/components/ui/toggle-group"
-import {
     Select,
     SelectContent,
     SelectGroup,
@@ -24,13 +20,10 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -111,16 +104,9 @@ export default function AddStaff() {
             setPassword("");
             setConfirmPassword("");
         }
-        // console.log(name);
-        // console.log(classInCharge);
-        // console.log(className);
-        // console.log(classes);
-        // console.log(username);
-        // console.log(password);
-        // console.log(getFinalFormat());
         const data = {
             "name": name,
-            // "in-charge-of": classInCharge,
+            "in-charge-of": classInCharge == "nocharge" ? "": classInCharge,
             "course_charges": getFinalFormat(),
             "password": password,
         }
