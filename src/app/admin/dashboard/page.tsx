@@ -34,6 +34,8 @@ import {
 import {
     Tabs,
     TabsContent,
+    TabsList,
+    TabsTrigger,
 } from "@/components/ui/tabs"
 import TableRowDynamic from "@/components/admin/dashboard/tablerow";
 import { useEffect } from "react";
@@ -62,13 +64,24 @@ export default function Dashboard() {
     //Asyncnously call a function
     useEffect(() => {
         const fetchData = async () => {
-            const response = await ApiWorker.viewStaff(document.cookie);
-            let unprocessedData = response.data;
-            for(let i = 0; i < unprocessedData.length; i++) {
-                unprocessedData[i] = convertStaffData(unprocessedData[i]);
-            }
-            setStaffData(unprocessedData);
-            console.log(response.data);
+            const response = await ApiWorker.viewStaff(document.cookie).then((response) => {
+                let unprocessedData = response.data;
+                for(let i = 0; i < unprocessedData.length; i++) {
+                    unprocessedData[i] = convertStaffData(unprocessedData[i]);
+                }
+                setStaffData(unprocessedData);
+                console.log(response.data);
+            });
+
+            const response2 = await ApiWorker.viewStaffAdvisor(document.cookie).then((response) => {
+                let unprocessedData = response.data;
+                for(let i = 0; i < unprocessedData.length; i++) {
+                    unprocessedData[i] = convertStaffData(unprocessedData[i]);
+                }
+                setStaffAdvisorData(unprocessedData);
+                console.log(response.data);
+            });
+
         }
         console.log(document.cookie);
         fetchData();
@@ -84,6 +97,7 @@ export default function Dashboard() {
                     createdAt: "2021-10-01",
             },
     ]);
+    const [staffAdvisorData, setStaffAdvisorData] = useState([]);
 
     return (
         <TooltipProvider>
@@ -120,6 +134,11 @@ export default function Dashboard() {
                 </header>
                 <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
                     <Tabs defaultValue="all">
+                    <div className="flex items-center flex-col sm:flex-row">
+                            <TabsList>
+                                <TabsTrigger value="all">All</TabsTrigger>
+                                <TabsTrigger value="advisor">Staff Advisors</TabsTrigger>
+                            </TabsList>
                         <div className="ml-auto flex items-center gap-2 w-[92%] justify-center m-2 sm:w-fit">
                             <a href={"/admin/dashboard/add"}>
                                 <Button size="sm" className="h-8 gap-1">
@@ -132,6 +151,7 @@ export default function Dashboard() {
                         </div>
                         <div className="flex items-center">
 
+                        </div>
                         </div>
                         <TabsContent value="all">
                             <Card x-chunk="dashboard-06-chunk-0">
@@ -165,6 +185,60 @@ export default function Dashboard() {
                                             {
                                                 staffData.length > 0 &&
                                                 staffData.map((staff, index) => (
+                                                    <TableRowDynamic
+                                                        id = {staff.id}
+                                                        name={staff.name}
+                                                        chargeOf={staff.chargeOf}
+                                                        courses={staff.courses}
+                                                        classes={staff.classes}
+                                                        createdAt={""}
+                                                        key={index}
+                                                    />
+                                                ))
+                                            }
+                                        </TableBody>
+                                    </Table>
+                                </CardContent>
+                                {/*<CardFooter>*/}
+                                {/*    <div className="text-xs text-muted-foreground">*/}
+                                {/*        Showing <strong>1-10</strong> of <strong>32</strong>{" "}*/}
+
+                                {/*    </div>*/}
+                                {/*</CardFooter>*/}
+                            </Card>
+                        </TabsContent>
+                        <TabsContent value="advisor">
+                            <Card x-chunk="dashboard-06-chunk-0">
+                                <CardHeader>
+                                    <CardTitle>Staffs</CardTitle>
+                                    <CardDescription>
+                                        Manage staff information and permissions
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead>Name</TableHead>
+                                                <TableHead>In Charge</TableHead>
+                                                <TableHead className="hidden md:table-cell">
+                                                    Subjects
+                                                </TableHead>
+                                                <TableHead className="hidden md:table-cell">
+                                                    Classes
+                                                </TableHead>
+                                                <TableHead className="hidden md:table-cell">
+                                                    Created at
+                                                </TableHead>
+                                                <TableHead>
+                                                    <span className="sr-only">Actions</span>
+                                                </TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {
+                                                staffAdvisorData.length > 0 &&
+                                                staffAdvisorData.map((staff, index) => (
                                                     <TableRowDynamic
                                                         id = {staff.id}
                                                         name={staff.name}

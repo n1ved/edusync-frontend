@@ -78,7 +78,6 @@ export default function TableRowDynamic(
                     <a href={url}>
                         <DropdownMenuItem>Edit</DropdownMenuItem>
                     </a>
-                    <DropdownMenuItem>Delete</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </TableCell>

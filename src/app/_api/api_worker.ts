@@ -56,6 +56,19 @@ export class ApiWorker {
     return response;
   }
 
+  public static async viewStaffAdvisor(token: string) {
+    const options = {
+      method: 'GET',
+      url: APIUrls.ADMIN_VIEW_STAFF_ADVISOR,
+      headers: {
+        Authorization: 'Bearer '+token,
+        'content-type': 'application/json'
+      }
+    };
+    const response = await axios.request(options);
+    return response;
+  }
+
   public static async addStaff(token: string, data: any) {
     data.password = await sha1(data.password);
     const options = {
