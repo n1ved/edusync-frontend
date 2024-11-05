@@ -1,6 +1,8 @@
+'use client'
 import Image from "next/image"
 import Link from "next/link"
 import { TooltipProvider } from "@radix-ui/react-tooltip";
+import {useEffect, useState} from "react";
 
 import {
     EditIcon,
@@ -35,121 +37,71 @@ import {
 } from "@/components/ui/tabs"
 import TableRowDynamic from "@/components/staff/dashboard/tablerow";
 import {Badge} from "@/components/ui/badge";
+import { ApiWorker } from "@/app/_api/api_worker";
 
 export default function Dashboard() {
+    
 
-    const assignmentData = [
-        {
-            id: "1",
-            description: "Assignment 1",
-            course : "CST201",
-            from : "John Doe",
-            dueDate: "01/01/2021"
-        },
-        {
-            id: "2",
-            description: "Assignment 2",
-            course : "CST201",
-            from : "John Doe",
-            dueDate: "01/01/2021"
-        },
-        {
-            id: "3",
-            description: "Assignment 3",
-            course : "CST201",
-            from : "John Doe",
-            dueDate: "01/01/2021"
-        },
-        {
-            id: "4",
-            description: "Assignment 4",
-            course : "CST201",
-            from : "John Doe",
-            dueDate: "01/01/2021"
-        },
-        {
-            id: "5",
-            description: "Assignment 5",
-            course : "CST201",
-            from : "John Doe",
-            dueDate: "01/01/2021"
-        },
-        {
-            id: "6",
-            description: "Assignment 6",
-            course : "CST201",
-            from : "John Doe",
-            dueDate: "01/01/2021"
+    const [regNo, setRegNo] = useState("");
+    const [assignmentData, setAssignmentData] = useState([]);
+    const [completedAssignmentData, setCompletedAssignmentData] = useState([]);
+    const [scheduleData, setScheduleData] = useState([]);
+
+    useEffect(() => {
+        ApiWorker.view_student_details(document.cookie).then((response) => {
+            if(response.status === 200) {
+                setRegNo(response.data.register_no);
+                fetchAssignmentData();
+            }
+        });
+        const fetchAssignmentData = async () => {
+            ApiWorker.view_remaining_assignment(document.cookie).then((response) => {
+                console.log("fetching")
+                if(response.status === 200) {
+                    console.log(response.data);
+                    //Date to DD/MM/YYYY
+                    response.data.map((data) => {
+                        const date = new Date(data.due_date);
+                        data.due_date = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+                    });
+
+
+                    setAssignmentData(response.data);
+                }
+            });
+        
+            ApiWorker.view_completed_assignment(document.cookie).then((response) => {
+                console.log("fetching")
+                if(response.status === 200) {
+                    console.log(response.data);
+                    setCompletedAssignmentData(response.data);
+                }
+            });
+
+            ApiWorker.view_schedule(document.cookie).then((response) => {
+                console.log("fetching")
+                if(response.status === 200) {
+                    const convertedData = convertScheduleData(response.data);
+                    console.log(convertedData);
+                    setScheduleData(convertedData);
+                }
+            });
         }
-    ]
-
-    const completedAssignmentData = [
-        {
-            id: "1",
-            description: "Assignment 1",
-            course : "CST201",
-            from : "John Doe",
-            marks: "10/10"
-        },
-        {
-            id: "2",
-            description: "Assignment 2",
-            course : "CST201",
-            from : "John Doe",
-            marks: "10/10"
-        },
-        {
-            id: "3",
-            description: "Assignment 3",
-            course : "CST201",
-            from : "John Doe",
-            marks: "10/10"
-        },
-        {
-            id: "4",
-            description: "Assignment 4",
-            course : "CST201",
-            from : "John Doe",
-            marks: "10/10"
-        },
-        {
-            id: "5",
-            description: "Assignment 5",
-            course : "CST201",
-            from : "John Doe",
-            marks: "10/10"
-        },
-        {
-            id: "6",
-            description: "Assignment 6",
-            course : "CST201",
-            from : "John Doe",
-            marks: "10/10"
-        }
-    ]
-
-    const scheduleData = [
-        {
-            day: "MON",
-            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-        },
-        {
-            day: "TUE",
-            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-        },
-        {
-            day: "WED",
-            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-        },
-        {
-            day: "THU",
-            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-        },
-        {
-            day: "FRI",
-            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-        },
-    ]
+    },[]);
+    interface ScheduleItem {
+        day: string;
+        hrs: string[];
+    }
+    
+    function convertScheduleData(backendData: any): ScheduleItem[] {
+        const days = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
+        
+        return days.map(day => ({
+            day,
+            hrs: backendData[day]?.[0] || Array(6).fill('')
+        }));
+    }
+    
 
 
     const attendanceData = [
@@ -310,8 +262,8 @@ export default function Dashboard() {
                                                    <TableRow>
                                                        <TableHead>Description</TableHead>
                                                        <TableHead>Course</TableHead>
-                                                       <TableHead>From</TableHead>
                                                        <TableHead>Due Date</TableHead>
+                                                       <TableHead>Total Marks</TableHead>
                                                    </TableRow>
                                                </TableHeader>
                                                <TableBody>
@@ -321,13 +273,13 @@ export default function Dashboard() {
                                                                {data.description}
                                                            </TableCell>
                                                            <TableCell>
-                                                               {data.course}
+                                                               {data.course_no}
                                                            </TableCell>
                                                            <TableCell>
-                                                               {data.from}
+                                                               {data.due_date}
                                                            </TableCell>
                                                            <TableCell>
-                                                               {data.dueDate}
+                                                               {data.total_marks}
                                                            </TableCell>
                                                        </TableRow>
                                                    ))}
@@ -340,27 +292,31 @@ export default function Dashboard() {
                                                    <TableRow>
                                                        <TableHead>Description</TableHead>
                                                        <TableHead>Course</TableHead>
-                                                       <TableHead>From</TableHead>
-                                                       <TableHead>Marks</TableHead>
+                                                       <TableHead>Awarded Marks</TableHead>
+                                                       <TableHead>Total Marks</TableHead>
                                                    </TableRow>
                                                </TableHeader>
                                                <TableBody>
-                                                   {completedAssignmentData.map((data) => (
-                                                       <TableRow key={data.id}>
-                                                           <TableCell className="font-medium">
-                                                               {data.description}
-                                                           </TableCell>
-                                                           <TableCell>
-                                                               {data.course}
-                                                           </TableCell>
-                                                           <TableCell>
-                                                               {data.from}
-                                                           </TableCell>
-                                                           <TableCell>
-                                                               {data.marks}
-                                                           </TableCell>
-                                                       </TableRow>
-                                                   ))}
+                                                   {completedAssignmentData.map((data) => 
+                                                    data.award_marks == null ? null : (
+                                                        (
+                                                            <TableRow key={data.id}>
+                                                                <TableCell className="font-medium">
+                                                                    {data.description}
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    {data.course_no}
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    {data.award_marks}
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    {data.marks}
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        )
+                                                    )
+                                                )}
                                                </TableBody>
                                            </Table>
                                        </TabsContent>

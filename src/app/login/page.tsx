@@ -21,6 +21,22 @@ export default function Login() {
             }
         });
     }
+    function handleStaffLogin() {
+        ApiWorker.staff_login(username, password).then((response) => {
+            document.cookie = `${response.data.token}`;
+            if(response.status === 200) {
+                window.location.href = "/staff/dashboard";
+            }
+        });
+    }
+    function handleStudentLogin() {
+        ApiWorker.student_login(username, password).then((response) => {
+            document.cookie = `${response.data.token}`;
+            if(response.status === 200) {
+                window.location.href = "/student/dashboard";
+            }
+        });
+    }
     return (
         <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[910px]">
             <div className="flex items-center justify-center py-12">
@@ -54,12 +70,12 @@ export default function Login() {
                                 <Input id="password" type="password" required onChange={(e) => setPassword(e.target.value)}/>
                             </div>
                             <TabsContent value="student">
-                                <Button type="submit" className="w-full">
+                                <Button type="submit" className="w-full" onClick={handleStudentLogin}>
                                     Login
                                 </Button>
                             </TabsContent>
                             <TabsContent value="staff">
-                                <Button type="submit" className="w-full">
+                                <Button type="submit" className="w-full" onClick={handleStaffLogin}>
                                     Login
                                 </Button>
                             </TabsContent>
