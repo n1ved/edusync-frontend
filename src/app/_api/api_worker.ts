@@ -194,6 +194,35 @@ export class ApiWorker {
     return response;
   }
 
+  public static async add_student(token: string, data: any) {
+    const options = {
+      method: 'POST',
+      url: APIUrls.STAFF_ADD_STUDENT,
+      headers: {
+        Authorization: 'Bearer '+token,
+        'content-type': 'application/json'
+      },
+      data: data
+    };
+    const response = await axios.request(options);
+    return response;
+  }
+
+  public static async staff_get_assignment_by_class(token: string, className: any) {
+    const options = {
+      method: 'GET',
+      url: APIUrls.STAFF_GET_ASSIGNMENT_BY_CLASS+"/"+className,
+      headers: {
+        Authorization: 'Bearer '+token,
+        'content-type': 'application/json'
+      },
+    };
+    const response = await axios.request(options);
+    return response;
+  }
+
+
+
 
   //STUDENT SECTION
   public static async student_login(username: string, password: string) {

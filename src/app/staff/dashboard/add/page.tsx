@@ -24,6 +24,7 @@ import React, {useEffect} from "react";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Calendar} from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
+import { ApiWorker } from "@/app/_api/api_worker";
 
 
 export default function AddStaff() {
@@ -43,6 +44,36 @@ export default function AddStaff() {
             setPassword("");
             setConfirmPassword("");
         }
+        ApiWorker.staff_self_details(document.cookie).then((response) => {
+            if(response.status === 200) {
+                setUsername(response.data.in_charge_of);
+            }
+        });
+
+        function formatDateAlternative(date:any) {
+            const d = new Date(date);
+            return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
+        }
+
+        setDate(formatDateAlternative(date));
+
+        ApiWorker.add_student(document.cookie, {
+            studentClass : username,
+            students : [
+                {
+                    register_no : id,
+                    name : name,
+                    phone_number : phone,
+                    date_of_birth : date,
+                    password : password
+                }
+            ]
+        }).then((response) => {
+            if(response.status === 200) {
+                alert("Student added successfully");
+                window.location.href = "/staff/dashboard";
+            }
+        });
     }
 
     function goBack(){
@@ -169,11 +200,6 @@ export default function AddStaff() {
                                 <div className={"mt-4"}/>
                                 <h3 className={"text-lg font-semibold text-muted-foreground"}>Credentials</h3>
                                 <div className={"mt-2"}/>
-                                <form>
-                                    <Input placeholder="Create a username"
-                                           onChange={(event) => setUsername(event.target.value)}/>
-                                </form>
-                                <div className={"mt-4"}/>
                                 <form>
                                     <Input type="password" placeholder="Create a password"
                                            onChange={(event) => setPassword(event.target.value)}/>

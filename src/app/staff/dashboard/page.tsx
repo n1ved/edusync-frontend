@@ -57,12 +57,32 @@ export default function Dashboard() {
                     ApiWorker.staff_view_students(document.cookie, response.data.in_charge_of).then((studentResponse) => {
                         setStudentData(convertStudentData(studentResponse.data));
                     });
+                    response.data.in_charge_of = response.data.in_charge_of.toLowerCase();
+                    ApiWorker.staff_get_assignment_by_class(document.cookie,response.data.in_charge_of).then((assignmentRes) => {
+                        setAssignmentData(convertAssignmentData(assignmentRes.data));
+                        console.log(assignmentRes);
+                    });
+
                 }
             }); 
         }
         fetchData();
     }, []);
 
+    function convertAssignmentData(backendData) {
+        return backendData.map(item => {
+            // Convert ISO date to DD/MM/YYYY format
+            const date = new Date(item.due_date);
+            const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+            
+            return {
+                id: item.assignment_no.toString(),
+                description: item.description,
+                class: item.course_no,
+                dueDate: formattedDate
+            };
+        });
+    }
     
     function convertScheduleData(inputData: any[]):any {
         const dayMapping: { [key: string]: string } = {

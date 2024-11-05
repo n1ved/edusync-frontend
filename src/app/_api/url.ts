@@ -21,7 +21,7 @@ export class APIUrls {
 
 	public static readonly STAFF_GET_STUDENTS_BY_CLASS = `${APIUrls.STAFF_BASE_URL}/getStudentByClass`; //DONE
 	public static readonly STAFF_GET_STUDENT_BY_ID = `${APIUrls.STAFF_BASE_URL}/getStudentById`;
-	public static readonly STAFF_ADD_STUDENT = `${APIUrls.STAFF_BASE_URL}/addStudent`;
+	public static readonly STAFF_ADD_STUDENT = `${APIUrls.STAFF_BASE_URL}/addStudents`;
 	public static readonly STAFF_DELETE_STUDENT = `${APIUrls.STAFF_BASE_URL}/deleteStudent`;
 	public static readonly STAFF_UPDATE_STUDENT = `${APIUrls.STAFF_BASE_URL}/updateStudent`;
 
@@ -43,12 +43,12 @@ export class APIUrls {
 
 	public static readonly STAFF_CHANGE_PASSWORD = `${APIUrls.STAFF_BASE_URL}/changePassword`;
 
-	//STUDENT
+	//STUDENT -- DONE
 	public static readonly STUDENT_BASE_URL = `${APIUrls.BASE_URL}/student`; //DONE
 	public static readonly STUDENT_LOGIN = `${APIUrls.STUDENT_BASE_URL}/login`; //DONE
 	public static readonly STUDENT_DETAILS = `${APIUrls.STUDENT_BASE_URL}/viewStudentDetails`; //DONE
 
-	public static readonly STUDENT_VIEW_ATTENDANCE = `${APIUrls.STUDENT_BASE_URL}/viewAttendancePercentage`;
+	public static readonly STUDENT_VIEW_ATTENDANCE = `${APIUrls.STUDENT_BASE_URL}/viewAttendancePercentage`; //DONE
 	public static readonly STUDENT_VIEW_SCHEDULE = `${APIUrls.STUDENT_BASE_URL}/viewSchedule`; //DONE
 
 	public static readonly STUDENT_VIEW_ASSIGNMENT_WITH_MARKS = `${APIUrls.STUDENT_BASE_URL}/viewAssignmentsWithMarks`; //Done

@@ -160,7 +160,7 @@ export default function AddStaff() {
         }
         const data = {
             "name": name,
-            "in-charge-of": classInCharge == "nocharge" ? "": classInCharge,
+            "in-charge-of": classInCharge == "nocharge" ? null: classInCharge,
             "course_charges": getFinalFormat(),
             "password": password,
         }
@@ -175,10 +175,18 @@ export default function AddStaff() {
         if(editMode){
             ApiWorker.editStaff(document.cookie,updateData).then((response) => {
                 console.log(response);
+                if(response.status == 200){
+                    alert("Staff Edited Successfully");
+                    window.location.href = "/admin/dashboard";
+                }
             });
         }else{
             ApiWorker.addStaff(document.cookie,data).then((response) => {
                 console.log(response);
+                if(response.status == 200){
+                    alert("Staff Added Successfully");
+                    window.location.href = "/admin/dashboard";
+                }
             });
         }
     }
@@ -258,7 +266,7 @@ export default function AddStaff() {
             <main
                 className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
                 <div className="mx-auto grid w-full max-w-6xl gap-2">
-                    <h1 className="text-3xl font-semibold">Add New Staff</h1>
+                    <h1 className="text-3xl font-semibold">{editMode ? "Edit Staff" : "Add New Staff"}</h1>
                 </div>
                 <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[1fr] lg:grid-cols-[1fr]">
                     <div className="grid gap-6">
@@ -271,7 +279,7 @@ export default function AddStaff() {
                             </CardHeader>
                             <CardContent>
                                 <form>
-                                    <Input placeholder="Name" onChange={(event) => setName(event.target.value)} value={editMode?name:""}/>
+                                    <Input placeholder="Name" onChange={(event) => setName(event.target.value)} value={name}/>
                                 </form>
                                 <div className={"mt-4"}/>
                                 <form>
@@ -349,11 +357,6 @@ export default function AddStaff() {
                                      <div className={"mt-4"}/>
                                     <h3 className={"text-lg font-semibold text-muted-foreground"}>Credentials</h3>
                                     <div className={"mt-2"}/>
-                                    <form>
-                                        <Input placeholder="Create a username"
-                                            onChange={(event) => setUsername(event.target.value)}/>
-                                    </form>
-                                    <div className={"mt-4"}/>
                                     <form>
                                         <Input type="password" placeholder="Create a password"
                                             onChange={(event) => setPassword(event.target.value)}/>

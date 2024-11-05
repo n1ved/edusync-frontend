@@ -148,10 +148,6 @@ export default function AddStaff() {
                             </CardHeader>
                             <CardContent>
                                 <form>
-                                    <Input placeholder="Student ID" onChange={(event) => setID(event.target.value)}/>
-                                </form>
-                                <div className={"mt-4"}/>
-                                <form>
                                     <Input placeholder="Assignment Description" onChange={(event) => setDesc(event.target.value)}/>
                                 </form>
                                 <div className={"mt-4"}/>
