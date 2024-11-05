@@ -1,7 +1,8 @@
+'use client'
 import Image from "next/image"
 import Link from "next/link"
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-
+import { useState } from "react"
 import {
     EditIcon,
     MoreHorizontal, Paperclip, PersonStanding,
@@ -34,99 +35,156 @@ import {
     TabsContent, TabsList, TabsTrigger,
 } from "@/components/ui/tabs"
 import TableRowDynamic from "@/components/staff/dashboard/tablerow";
+import { useEffect } from "react";
+import { ApiWorker } from "@/app/_api/api_worker";
 
 export default function Dashboard() {
 
-    const assignmentData = [
-        {
-            id: "1",
-            description: "Assignment 1",
-            class: "CST201",
-            dueDate: "01/01/2021"
-        },
-        {
-            id: "2",
-            description: "Assignment 2",
-            class: "CST201",
-            dueDate: "01/01/2021"
-        },
-        {
-            id: "3",
-            description: "Assignment 3",
-            class: "CST201",
-            dueDate: "01/01/2021"
-        },
-        {
-            id: "4",
-            description: "Assignment 4",
-            class: "CST201",
-            dueDate: "01/01/2021"
+    const [advisorMode , setAdvisorMode] = useState(false);
+    const [assignmentData, setAssignmentData] = useState([]);
+    const [scheduleData, setScheduleData] = useState([]);
+    const [studentData, setStudentData] = useState([]);
+    useEffect(() => {
+        async function fetchData() {
+            const response = await ApiWorker.staff_self_details(document.cookie).then((response) => {
+                if(response.data.in_charge_of !== null) {
+                    setAdvisorMode(true);
+                    response.data.in_charge_of = response.data.in_charge_of.toLowerCase();
+                    ApiWorker.staff_view_schedule(document.cookie, response.data.in_charge_of).then((scheduleResponse) => {
+                        setScheduleData(convertScheduleData(scheduleResponse.data));
+                    });
+                    response.data.in_charge_of = response.data.in_charge_of.toUpperCase();
+                    ApiWorker.staff_view_students(document.cookie, response.data.in_charge_of).then((studentResponse) => {
+                        setStudentData(convertStudentData(studentResponse.data));
+                    });
+                }
+            }); 
         }
-    ]
+        fetchData();
+    }, []);
 
-    const scheduleData = [
-        {
-            day: "MON",
-            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-        },
-        {
-            day: "TUE",
-            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-        },
-        {
-            day: "WED",
-            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-        },
-        {
-            day: "THU",
-            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-        },
-        {
-            day: "FRI",
-            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-        },
-        {
-            day: "SAT",
-            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-        },
-        {
-            day: "SUN",
-            hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-        }
-    ]
+    
+    function convertScheduleData(inputData: any[]):any {
+        const dayMapping: { [key: string]: string } = {
+            'Monday': 'MON',
+            'Tuesday': 'TUE',
+            'Wednesday': 'WED',
+            'Thursday': 'THU',
+            'Friday': 'FRI'
+        };
+    
+        return inputData.map(item => ({
+            day: dayMapping[item.day],
+            hrs: item.hours // rename 'hours' to 'hrs'
+        }));
+    }
+
+    function convertStudentData(backendData: any[]): any {
+        return backendData.map((student, index) => {
+            // Convert ISO date to DD/MM/YYYY format
+            const dob = new Date(student.date_of_birth);
+            const formattedDOB = `${dob.getDate().toString().padStart(2, '0')}/${(dob.getMonth() + 1).toString().padStart(2, '0')}/${dob.getFullYear()}`;
+            
+            return {
+                id: (index + 1).toString(), // or student.register_no if you prefer
+                name: student.name,
+                DOB: formattedDOB,
+                phone: student.phone_number,
+                createdAt: "01/01/2021" // Add your actual creation date if available
+            };
+        });
+    }
+
+    // const assignmentData = [
+    //     {
+    //         id: "1",
+    //         description: "Assignment 1",
+    //         class: "CST201",
+    //         dueDate: "01/01/2021"
+    //     },
+    //     {
+    //         id: "2",
+    //         description: "Assignment 2",
+    //         class: "CST201",
+    //         dueDate: "01/01/2021"
+    //     },
+    //     {
+    //         id: "3",
+    //         description: "Assignment 3",
+    //         class: "CST201",
+    //         dueDate: "01/01/2021"
+    //     },
+    //     {
+    //         id: "4",
+    //         description: "Assignment 4",
+    //         class: "CST201",
+    //         dueDate: "01/01/2021"
+    //     }
+    // ]
+
+    // const scheduleData = [
+    //     {
+    //         day: "MON",
+    //         hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
+    //     },
+    //     {
+    //         day: "TUE",
+    //         hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
+    //     },
+    //     {
+    //         day: "WED",
+    //         hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
+    //     },
+    //     {
+    //         day: "THU",
+    //         hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
+    //     },
+    //     {
+    //         day: "FRI",
+    //         hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
+    //     },
+    //     {
+    //         day: "SAT",
+    //         hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
+    //     },
+    //     {
+    //         day: "SUN",
+    //         hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
+    //     }
+    // ]
 
 
 
-    const studentData = [
-        {
-            id: "1",
-            name: "John Doe",
-            DOB: "01/01/2001",
-            phone: "1234567890",
-            createdAt: "01/01/2021"
-        },
-        {
-            id: "2",
-            name: "Jane Doe",
-            DOB: "01/01/2001",
-            phone: "1234567890",
-            createdAt: "01/01/2021"
-        },
-        {
-            id: "3",
-            name: "John Smith",
-            DOB: "01/01/2001",
-            phone: "1234567890",
-            createdAt: "01/01/2021"
-        },
-        {
-            id: "4",
-            name: "Jane Smith",
-            DOB: "01/01/2001",
-            phone: "1234567890",
-            createdAt: "01/01/2021"
-        }
-        ]
+    // const studentData = [
+    //     {
+    //         id: "1",
+    //         name: "John Doe",
+    //         DOB: "01/01/2001",
+    //         phone: "1234567890",
+    //         createdAt: "01/01/2021"
+    //     },
+    //     {
+    //         id: "2",
+    //         name: "Jane Doe",
+    //         DOB: "01/01/2001",
+    //         phone: "1234567890",
+    //         createdAt: "01/01/2021"
+    //     },
+    //     {
+    //         id: "3",
+    //         name: "John Smith",
+    //         DOB: "01/01/2001",
+    //         phone: "1234567890",
+    //         createdAt: "01/01/2021"
+    //     },
+    //     {
+    //         id: "4",
+    //         name: "Jane Smith",
+    //         DOB: "01/01/2001",
+    //         phone: "1234567890",
+    //         createdAt: "01/01/2021"
+    //     }
+    //     ]
 
     return (
         <TooltipProvider>
@@ -161,11 +219,17 @@ export default function Dashboard() {
                     </DropdownMenu>
                 </header>
                 <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-                    <Tabs defaultValue="students">
+                    <Tabs defaultValue={advisorMode ? "students" : "assignment"}>
                         <div className="flex items-center flex-col sm:flex-row">
                             <TabsList>
-                                <TabsTrigger value="students">Students</TabsTrigger>
-                                <TabsTrigger value="schedule">Schedule</TabsTrigger>
+                                {
+                                    advisorMode &&
+                                    <TabsTrigger value="students">Students</TabsTrigger>
+                                }
+                                {
+                                    advisorMode &&
+                                    <TabsTrigger value="schedule">Schedule</TabsTrigger>
+                                }
                                 <TabsTrigger value="assignment">Assignments</TabsTrigger>
                             </TabsList>
                             <div className="ml-auto flex items-center gap-2 w-[92%] justify-center m-2 sm:w-fit">

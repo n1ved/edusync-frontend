@@ -26,42 +26,84 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {cn} from "@/lib/utils";
 import {Calendar} from "@/components/ui/calendar";
+import { ApiWorker } from "@/app/_api/api_worker";
 
 
 export default function AddStaff() {
 
     const [date, setDate] = React.useState<Date>()
+    const [day , setDay] = React.useState("");
     const [subject, setSubject] = React.useState("");
     const [classId, setClassId] = React.useState("");
+    const [hour , setHour] = React.useState("");
+    const [classNames, setClassNames] = React.useState([]);
+    const [subjectNames, setSubjectNames] = React.useState([]);
+    const [students,setStudents] = React.useState([]);
+    const [loaded ,setLoaded] = React.useState(false);
+    // let hour = 1;
 
+    function formatDate(date:any) {
+        return new Date(date).toISOString().split('T')[0];
+    }
+    
+    // Usage examples:
+    const formattedDate = formatDateAlternative(date);  // Returns "2024-11-05"
+    
+    // Alternative method using padStart
+    function formatDateAlternative(date:any) {
+        const d = new Date(date);
+        return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
+    }
+    function getDayFromDate(date:any) {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const dayIndex = new Date(date).getDay();
+        return days[dayIndex];
+    }
+    function convertClassData(backendData) {
+        return backendData.map(item => item.class);
+    }
+    function convertStudentData(backendData) {
+        return backendData.map(student => ({
+            id: student.register_no,
+            name: student.name
+        }));
+    }
+    
+      
 
-    const students = [
-        {id: "MDL22CS001", name: "John Doe"},
-        {id: "MDL22CS002", name: "Jane Doe"},
-        {id: "MDL22CS003", name: "John Smith"},
-        {id: "MDL22CS004", name: "Jane Smith"},
-        {id: "MDL22CS005", name: "John Doe"},
-    ]
 
     const [attendance, setAttendance] = React.useState(
-        Array.from({length: students.length}, () => {return {id: "", name: "", present: false}})
+        Array.from({length: 1}, () => {return {id: "", name: "", present: false}})
     );
+
+    useEffect(() => {
+        ApiWorker.staff_show_classes(document.cookie).then((response) => {
+            console.log(response);
+            setClassNames(response.data.map((item:any) => item.class));
+        });
+
+        ApiWorker.staff_show_courses(document.cookie).then((response) => {
+            console.log(response);
+            setSubjectNames(response.data.map((item:any) => item.course_no));
+        });
+        
+    },[]);
 
     function onSubmission(){
         // later check if teacher has permission to add assignment
     }
 
-    const classNames = [
-        "CS26C",
-        "CS26B",
-        "CS26A",
-    ]
+    // const classNames = [
+    //     "CS26C",
+    //     "CS26B",
+    //     "CS26A",
+    // ]
 
-    const subjectNames = [
-        "CST201",
-        "CST202",
-        "CST203",
-    ]
+    // const subjectNames = [
+    //     "CST201",
+    //     "CST202",
+    //     "CST203",
+    // ]
     const hrs = [
         "1",
         "2",
@@ -80,6 +122,27 @@ export default function AddStaff() {
         console.log(date);
     }
 
+    function handleSearch(){
+
+        const data = {
+            date_of_att: formatDate(date),
+            day: getDayFromDate(date),
+            course_no: subject,
+            className: classId,
+            hour : hour
+        }
+        ApiWorker.staff_check_attendance(document.cookie,data).then((response) => {
+            ApiWorker.staff_view_students(document.cookie,classId).then((studentResponse) => {
+                setStudents(convertStudentData(studentResponse.data));
+                setAttendance(
+                    Array.from({length: students.length}, () => {return {id: "", name: "", present: false}})
+                );
+                setLoaded(true);
+            });
+        });
+        console.log(formattedDate);
+    }
+        
 
 
     function goBack(){
@@ -211,7 +274,7 @@ export default function AddStaff() {
                                     </SelectContent>
                                 </Select>
                             {/*    Select Hour*/}
-                                <Select onValueChange={(value) => setSubject(value)}>
+                                <Select onValueChange={(value) => setHour(value)}>
                                     <SelectTrigger className="w-[300px] sm:w-[200px]">
                                         <SelectValue placeholder="Hour"/>
                                     </SelectTrigger>
@@ -226,12 +289,13 @@ export default function AddStaff() {
 
                             </div>
                         <div className="m-10 flex justify-center items-stretch">
-                            <Button>
+                            <Button onClick={handleSearch}>
                                 Search for entries
                             </Button>
                         </div>
                             <div className="m-10 grid grid-cols-1 sm:grid-cols-2 gap-10">
                                 {
+                                    loaded &&
                                     students.map((student, index) => {
                                         return (
                                             <Card id={student.id} key={student.id}>

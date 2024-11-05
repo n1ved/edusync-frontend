@@ -98,16 +98,84 @@ export class ApiWorker {
     return response;
   }
 
-  public static async getStudentsByClass(token: string, data: any) {
+  public static async staff_self_details(token: string) {
     const options = {
-      method: 'POST',
-      url: APIUrls.STAFF_GET_STUDENTS_BY_CLASS,
+      method: 'GET',
+      url: APIUrls.STAFF_SELF_DETAILS,
+      headers: {
+        Authorization: 'Bearer '+token,
+        'content-type': 'application/json'
+      }
+    };
+    const response = await axios.request(options);
+    return response;
+  }
+
+  public static async staff_view_schedule(token: string,className : string) {
+    const data = {
+      className: className
+    };
+    const options = {
+      method: 'GET',
+      url: APIUrls.STAFF_VIEW_SCHEDULE+"/"+className,
       headers: {
         Authorization: 'Bearer '+token,
         'content-type': 'application/json'
       },
-      data: data
     };
+    const response = await axios.request(options);
+    return response;
+  }
+
+  public static async staff_view_students(token: string,className : string) {
+    const options = {
+      method: 'GET',
+      url: APIUrls.STAFF_GET_STUDENTS_BY_CLASS+"/"+className,
+      headers: {
+        Authorization: 'Bearer '+token,
+        'content-type': 'application/json'
+      },
+    };
+    const response = await axios.request(options);
+    return response;
+  }
+
+  public static async staff_show_classes(token: string) {
+    const options = {
+      method: 'GET',
+      url: APIUrls.STAFF_SHOW_CLASSES,
+      headers: {
+        Authorization: 'Bearer '+token,
+        'content-type': 'application/json'
+      },
+    };
+    const response = await axios.request(options);
+    return response;
+  }
+
+  public static async staff_show_courses(token: string) {
+    const options = {
+      method: 'GET',
+      url: APIUrls.STAFF_SHOW_COURSES,
+      headers: {
+        Authorization: 'Bearer '+token,
+        'content-type': 'application/json'
+      },
+    };
+    const response = await axios.request(options);
+    return response;
+  }
+
+  public static async staff_check_attendance(token:string,data:any){
+    const options = {
+      method : 'POST',
+      url : APIUrls.STAFF_CHECK_ATTENDANCE,
+      headers : {
+        Authorization: 'Bearer '+token,
+        'content-type': 'application/json'
+      },
+      data : data
+    }
     const response = await axios.request(options);
     return response;
   }
@@ -132,7 +200,7 @@ export class ApiWorker {
     const hashedPassword = await this.hashPassword(password);
     const register_no = username;
     const data = {
-      "register_no": username,
+      "register_no": register_no,
       "password": hashedPassword,
     };
     const options = {
@@ -196,6 +264,19 @@ export class ApiWorker {
         'content-type': 'application/json'
       },
     };
+    const response = await axios.request(options);
+    return response;
+  }
+
+  public static async view_attendance(token: string) {
+    const options = {
+      method: 'GET',
+      url: APIUrls.STUDENT_VIEW_ATTENDANCE,
+      headers: {
+        Authorization: 'Bearer '+token,
+        'content-type': 'application/json'
+      },
+    }
     const response = await axios.request(options);
     return response;
   }

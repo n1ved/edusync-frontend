@@ -46,6 +46,16 @@ export default function Dashboard() {
     const [assignmentData, setAssignmentData] = useState([]);
     const [completedAssignmentData, setCompletedAssignmentData] = useState([]);
     const [scheduleData, setScheduleData] = useState([]);
+    const [attendanceData, setAttendanceData] = useState([]);
+
+    function convertAttendanceData(backendData) {
+        return backendData.map(item => ({
+            id: item.course_no,
+            present: parseInt(item.present),
+            total: parseInt(item.total),
+            attendance: `${item.attendance_percentage}%`
+        }));
+    }
 
     useEffect(() => {
         ApiWorker.view_student_details(document.cookie).then((response) => {
@@ -60,7 +70,7 @@ export default function Dashboard() {
                 if(response.status === 200) {
                     console.log(response.data);
                     //Date to DD/MM/YYYY
-                    response.data.map((data) => {
+                    response.data.map((data : any) => {
                         const date = new Date(data.due_date);
                         data.due_date = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
                     });
@@ -86,6 +96,16 @@ export default function Dashboard() {
                     setScheduleData(convertedData);
                 }
             });
+
+            ApiWorker.view_attendance(document.cookie).then((response) => {
+                console.log("fetching")
+                if(response.status === 200) {
+                    const convertedData = convertAttendanceData(response.data);
+                    console.log(convertedData);
+                    setAttendanceData(convertedData);
+                }
+            });
+
         }
     },[]);
     interface ScheduleItem {
@@ -94,7 +114,7 @@ export default function Dashboard() {
     }
     
     function convertScheduleData(backendData: any): ScheduleItem[] {
-        const days = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
+        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
         
         return days.map(day => ({
             day,
@@ -104,44 +124,7 @@ export default function Dashboard() {
     
 
 
-    const attendanceData = [
-        {
-            id: "CST201",
-            present: 10,
-            total: 10,
-            attendance: "100%",
-        },
-        {
-            id: "CST202",
-            present: 9,
-            total: 10,
-            attendance: "90%",
-        },
-        {
-            id: "CST203",
-            present: 8,
-            total: 10,
-            attendance: "80%",
-        },
-        {
-            id: "CST204",
-            present: 7,
-            total: 10,
-            attendance: "70%",
-        },
-        {
-            id: "CST205",
-            present: 6,
-            total: 10,
-            attendance: "60%",
-        },
-        {
-            id: "CST206",
-            present: 5,
-            total: 10,
-            attendance: "50%",
-        }
-        ]
+
 
 
     return (

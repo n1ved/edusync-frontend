@@ -23,7 +23,7 @@ export default function Login() {
     }
     function handleStaffLogin() {
         ApiWorker.staff_login(username, password).then((response) => {
-            document.cookie = `${response.data.token}`;
+            document.cookie = `${response.data}`;
             if(response.status === 200) {
                 window.location.href = "/staff/dashboard";
             }

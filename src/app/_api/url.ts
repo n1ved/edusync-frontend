@@ -17,8 +17,9 @@ export class APIUrls {
 	//STAFF
 	public static readonly STAFF_BASE_URL = `${APIUrls.BASE_URL}/staff`; //DONE
 	public static readonly STAFF_LOGIN = `${APIUrls.STAFF_BASE_URL}/login`; //DONE
+	public static readonly STAFF_SELF_DETAILS = `${APIUrls.STAFF_BASE_URL}/selfDetails`; //DONE
 
-	public static readonly STAFF_GET_STUDENTS_BY_CLASS = `${APIUrls.STAFF_BASE_URL}/getStudentByClass`;
+	public static readonly STAFF_GET_STUDENTS_BY_CLASS = `${APIUrls.STAFF_BASE_URL}/getStudentByClass`; //DONE
 	public static readonly STAFF_GET_STUDENT_BY_ID = `${APIUrls.STAFF_BASE_URL}/getStudentById`;
 	public static readonly STAFF_ADD_STUDENT = `${APIUrls.STAFF_BASE_URL}/addStudent`;
 	public static readonly STAFF_DELETE_STUDENT = `${APIUrls.STAFF_BASE_URL}/deleteStudent`;
@@ -37,23 +38,24 @@ export class APIUrls {
 	public static readonly STAFF_MARK_ASSIGNMENT = `${APIUrls.STAFF_BASE_URL}/markAssignment`;
 	public static readonly STAFF_GET_MARKS = `${APIUrls.STAFF_BASE_URL}/getMarks`;
 	
-	public static readonly STAFF_SHOW_CLASSES = `${APIUrls.STAFF_BASE_URL}/showClasses`;
+	public static readonly STAFF_SHOW_CLASSES = `${APIUrls.STAFF_BASE_URL}/showClasses`; //DONE
+	public static readonly STAFF_SHOW_COURSES = `${APIUrls.STAFF_BASE_URL}/showCourses`; //DONE
 
 	public static readonly STAFF_CHANGE_PASSWORD = `${APIUrls.STAFF_BASE_URL}/changePassword`;
 
 	//STUDENT
 	public static readonly STUDENT_BASE_URL = `${APIUrls.BASE_URL}/student`; //DONE
 	public static readonly STUDENT_LOGIN = `${APIUrls.STUDENT_BASE_URL}/login`; //DONE
-	public static readonly STUDENT_DETAILS = `${APIUrls.STUDENT_BASE_URL}/viewStudentDetails`;
+	public static readonly STUDENT_DETAILS = `${APIUrls.STUDENT_BASE_URL}/viewStudentDetails`; //DONE
 
-	public static readonly STUDENT_VIEW_ATTENDANCE = `${APIUrls.STUDENT_BASE_URL}/viewAttendance`;
-	public static readonly STUDENT_VIEW_SCHEDULE = `${APIUrls.STUDENT_BASE_URL}/viewSchedule`;
+	public static readonly STUDENT_VIEW_ATTENDANCE = `${APIUrls.STUDENT_BASE_URL}/viewAttendancePercentage`;
+	public static readonly STUDENT_VIEW_SCHEDULE = `${APIUrls.STUDENT_BASE_URL}/viewSchedule`; //DONE
 
 	public static readonly STUDENT_VIEW_ASSIGNMENT_WITH_MARKS = `${APIUrls.STUDENT_BASE_URL}/viewAssignmentsWithMarks`; //Done
 	public static readonly STUDENT_VIEW_REMAINING_ASSIGNMENT = `${APIUrls.STUDENT_BASE_URL}/viewRemainingAssignments`;  //Done
 
 	public static readonly STUDENT_VIEW_STUDENTS = `${APIUrls.STUDENT_BASE_URL}/viewStudents`; // WHAT!!!!!!!!
-	public static readonly STUDENT_VIEW_STUDENT_DETAILS = `${APIUrls.STUDENT_BASE_URL}/viewStudentDetails`;
+	public static readonly STUDENT_VIEW_STUDENT_DETAILS = `${APIUrls.STUDENT_BASE_URL}/viewStudentDetails`; //Done
 
 	public static readonly STUDENT_CHANGE_PASSWORD = `${APIUrls.STUDENT_BASE_URL}/changePassword`;
 
