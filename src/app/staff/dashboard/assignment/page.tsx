@@ -33,6 +33,8 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select";
+import { Description } from "@radix-ui/react-dialog";
+import { ApiWorker } from "@/app/_api/api_worker";
 
 
 export default function AddStaff() {
@@ -42,25 +44,44 @@ export default function AddStaff() {
     const [desc, setDesc] = React.useState("");
     const [classCode,setClassCode] = React.useState("");
     const [subject, setSubject] = React.useState("");
+    const [marks, setMarks] = React.useState("");
+    const [classNames,setClassNames] = React.useState([]);
+    const [subjectNames,setSubjectNames] = React.useState([]);
 
+    useEffect(() => {
+        ApiWorker.staff_show_classes(document.cookie).then((response) => {
+            console.log(response);
+            setClassNames(response.data.map((item:any) => item.class));
+        });
 
+        ApiWorker.staff_show_courses(document.cookie).then((response) => {
+            console.log(response);
+            setSubjectNames(response.data.map((item:any) => item.course_no));
+        });
+    },[]);
 
-
-    function onSubmission(){
-        // later check if teacher has permission to add assignment
+    function formatDateAlternative(date:any) {
+        const d = new Date(date);
+        return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
     }
-
-    const classNames = [
-        "CS26C",
-        "CS26B",
-        "CS26A",
-    ]
-
-    const subjectNames = [
-        "CST201",
-        "CST202",
-        "CST203",
-    ]
+    function onSubmission(){
+        const data = {
+            className : classCode,
+            description : desc,
+            marks : marks,
+            dueDate : formatDateAlternative(date),
+            course_no : subject
+        }
+        ApiWorker.staff_give_assignment(document.cookie,data).then((response) => {
+            console.log(response);
+            if(response.status === 200){
+                alert("Assignment created successfully");
+                window.location.href = "/staff/dashboard/assignment";
+            }else{
+                alert("Error creating assignment"); 
+            }
+        });
+    }
 
     function goBack(){
         window.history.back();
@@ -149,6 +170,10 @@ export default function AddStaff() {
                             <CardContent>
                                 <form>
                                     <Input placeholder="Assignment Description" onChange={(event) => setDesc(event.target.value)}/>
+                                </form>
+                                <div className={"mt-4"}/>
+                                <form>
+                                    <Input placeholder="Maximum marks" onChange={(event) => setMarks(event.target.value)}/>
                                 </form>
                                 <div className={"mt-4"}/>
                                 <form>

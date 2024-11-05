@@ -40,6 +40,7 @@ export default function AddStaff() {
     const [subjectNames, setSubjectNames] = React.useState([]);
     const [students,setStudents] = React.useState([]);
     const [loaded ,setLoaded] = React.useState(false);
+    const [attendanceData, setAttendanceData] = React.useState([]);
     // let hour = 1;
 
     function formatDate(date:any) {
@@ -90,20 +91,13 @@ export default function AddStaff() {
     },[]);
 
     function onSubmission(){
-        // later check if teacher has permission to add assignment
+        ApiWorker.staff_update_attendance(document.cookie, convertAttendanceFormat(attendanceData, classId)).then((response) => {
+            if(response != undefined ){
+                console.log(response.data);
+                alert("Attendance updated successfully");
+            }
+        });
     }
-
-    // const classNames = [
-    //     "CS26C",
-    //     "CS26B",
-    //     "CS26A",
-    // ]
-
-    // const subjectNames = [
-    //     "CST201",
-    //     "CST202",
-    //     "CST203",
-    // ]
     const hrs = [
         "1",
         "2",
@@ -113,34 +107,59 @@ export default function AddStaff() {
         "6",
     ]
 
-    function  toggleAttendance(index: number , id: string, name: string){
-        let newAttendance = [...attendance];
-        newAttendance[index].present = !newAttendance[index].present;
-        newAttendance[index].id = id;
-        newAttendance[index].name = name;
-        setAttendance(newAttendance);
-        console.log(date);
+    function toggleAttendance(index: number, register_no: string,toggleVal:boolean, studentName: string) {
+        let newAttendance = [...attendanceData];
+        newAttendance[index] = {
+            ...newAttendance[index],
+            att: !toggleVal,
+            register_no: register_no,
+            // Update other fields if needed
+            att_id: newAttendance[index].att_id,
+            date_of_att: date, // Assuming you have date variable
+            day: new Date(date).toLocaleString('en-US', { weekday: 'long' }),
+            course_no: newAttendance[index].course_no,
+            hour: newAttendance[index].hour
+        };
+        setAttendanceData(newAttendance);
+        console.log(attendanceData);
+    }
+    
+    function convertAttendanceFormat(attendanceArray: any[], className: string) {
+        // Get the first record to extract common data
+        const firstRecord = attendanceArray[0];
+        
+        // Format the date
+        const date = new Date(firstRecord.date_of_att);
+        const formattedDate = date.toISOString().split('T')[0];
+    
+        return {
+            className: className,
+            date_of_att: formattedDate,
+            day: firstRecord.day,
+            hour: firstRecord.hour,
+            course_no: firstRecord.course_no,
+            attendance: attendanceArray.map(record => ({
+                register_no: record.register_no,
+                att: record.att
+            }))
+        };
     }
 
     function handleSearch(){
-
         const data = {
             date_of_att: formatDate(date),
             day: getDayFromDate(date),
             course_no: subject,
             className: classId,
-            hour : hour
+            hour : parseInt(hour)
         }
+        console.log(data)
         ApiWorker.staff_check_attendance(document.cookie,data).then((response) => {
-            ApiWorker.staff_view_students(document.cookie,classId).then((studentResponse) => {
-                setStudents(convertStudentData(studentResponse.data));
-                setAttendance(
-                    Array.from({length: students.length}, () => {return {id: "", name: "", present: false}})
-                );
-                setLoaded(true);
-            });
+            if(response != undefined ){
+                console.log(response.data);
+                setAttendanceData(response.data);
+            }
         });
-        console.log(formattedDate);
     }
         
 
@@ -295,25 +314,26 @@ export default function AddStaff() {
                         </div>
                             <div className="m-10 grid grid-cols-1 sm:grid-cols-2 gap-10">
                                 {
-                                    loaded &&
-                                    students.map((student, index) => {
+                                    attendanceData.map((record, index) => {
+                                        const studentName = students.find(s => s.register_no === record.register_no)?.name || record.register_no;
                                         return (
-                                            <Card id={student.id} key={student.id}>
+                                            <Card id={record.register_no} key={record.att_id}>
                                                 <CardHeader>
                                                     <div className={"flex justify-between"}>
                                                         <h2>
-                                                            {student.id} | {student.name}
+                                                            {record.register_no} | {studentName}
                                                         </h2>
                                                         <Switch
                                                             id={"attendance" + index}
-                                                            checked={attendance[index].present}
-                                                            onCheckedChange={() => toggleAttendance(index, student.id, student.name)}
+                                                            checked={record.att}
+                                                            onCheckedChange={() => toggleAttendance(index, record.register_no,record.att, studentName)}
                                                         />
                                                     </div>
                                                 </CardHeader>
                                             </Card>
                                         )
                                     })
+                                    
                                 }
 
                             </div>

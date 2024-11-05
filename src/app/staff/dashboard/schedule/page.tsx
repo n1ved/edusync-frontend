@@ -37,6 +37,7 @@ import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import React, {useEffect} from "react";
 import {collectMetadata} from "next/dist/lib/metadata/resolve-metadata";
+import { ApiWorker } from "@/app/_api/api_worker";
 
 
 export default function AddSchedule() {
@@ -53,17 +54,35 @@ export default function AddSchedule() {
     const [scheduleData  , setScheduleData] = React.useState(
         Array.from({length: 5}, () => Array.from({length: 6}, () => ""))
     );
+    const [subjects, setSubjects] = React.useState([]);
+    const [editMode, setEditMode] = React.useState(true);
 
+    useEffect(() => {
+        ApiWorker.staff_show_courses(document.cookie).then((response) => {
+            console.log(response);
+            setSubjects(response.data.map((item:any) => item.course_no));
+        });
+        ApiWorker.staff_self_details(document.cookie).then((response) => {
+            if(response.data.in_charge_of !== null) {
+                response.data.in_charge_of = response.data.in_charge_of.toLowerCase();
+                setClassInCharge(response.data.in_charge_of);
+                ApiWorker.staff_view_schedule(document.cookie, response.data.in_charge_of).then((scheduleResponse) => {
+                    console.log(scheduleResponse.data);
+                    if(scheduleResponse.data.length === 0) {
+                        if(editMode){
+                            setEditMode(false);
+                        }
+                    }else{
+                       console.log(scheduleResponse.data);
+                       console.log(convertToHoursArray(scheduleResponse.data));
+                       setScheduleData(convertToHoursArray(scheduleResponse.data));
+                    }
+                });
+            }
+        });
+    },[]);
 
-
-    const subjects = [
-        "CST201",
-        "CST202",
-        "CST203",
-        "CST204",
-        "CST205",
-        "CST206",
-    ]
+    
 
     const weekdays = [
         "Monday",
@@ -72,6 +91,30 @@ export default function AddSchedule() {
         "Thursday",
         "Friday",
     ];
+    function convertToHoursArray(schedule) {
+        return schedule.map(day => day.hours);
+    }
+    function createScheduleFormat(hoursArray, days) {
+        return days.map((day, index) => ({
+            day: day,
+            hours: hoursArray[index]
+        }));
+    }
+    function convertArrayToScheduleFormat(hoursArray, className) {
+        const days = ['mon', 'tue', 'wed', 'thu', 'fri'];
+        const schedule = {};
+        
+        days.forEach((day, index) => {
+            schedule[day] = hoursArray[index];
+        });
+    
+        return {
+            className: className,
+            schedule: schedule
+        };
+    }
+    
+    
 
     function onSelectData(data : string , col:string , hr:number){
        let copy = [...scheduleData];
@@ -82,7 +125,15 @@ export default function AddSchedule() {
 
 
     function onSubmission(){
-        console.log(scheduleData)
+        console.log(createScheduleFormat(scheduleData,weekdays));
+        const data = convertArrayToScheduleFormat(scheduleData,classInCharge);
+        ApiWorker.staff_add_schedule(document.cookie, data).then((response) => {
+            console.log(response);
+            if(response.status === 200){
+                alert("Schedule Updated");
+                window.location.href = "/staff/dashboard/schedule";
+            }
+        });
     }
 
     function goBack(){
@@ -184,7 +235,7 @@ export default function AddSchedule() {
                                                                 <div className=" grid grid-cols-6" key={index+day}>
                                                                     <Select onValueChange={(data) => onSelectData(data,day,(index+1))}>
                                                                         <SelectTrigger className="w-[100px]">
-                                                                            <SelectValue placeholder={"hr" + (index+1)} />
+                                                                            <SelectValue placeholder={editMode ? scheduleData[weekdays.indexOf(day)][index] : ("hr " + (index +1))} defaultValue={editMode ? scheduleData[weekdays.indexOf(day)][index] : undefined}/>
                                                                         </SelectTrigger>
                                                                         <SelectContent>
                                                                             {

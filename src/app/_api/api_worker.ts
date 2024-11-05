@@ -10,6 +10,14 @@ export class ApiWorker {
     return sha1(password);
   }
   
+  private static async handleResponse(response: any) {
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      alert("Error: "+response.data.message);
+    }
+  }
+
   public static async sayHello() {
     const response = await axios.get(APIUrls.BASE_URL);
     return response.data;
@@ -177,7 +185,25 @@ export class ApiWorker {
       data : data
     }
     const response = await axios.request(options);
-    return response;
+    if(response.status === 200){
+      return response;
+    }
+  }
+
+  public static async staff_update_attendance(token:string,data:any){
+    const options = {
+      method : 'PUT',
+      url : APIUrls.STAFF_UPDATE_ATTENDANCE,
+      headers : {
+        Authorization: 'Bearer '+token,
+        'content-type': 'application/json'
+      },
+      data : data
+    }
+    const response = await axios.request(options);
+    if(response.status === 200){
+      return response;
+    }
   }
 
   public static async getStudentById(token: string, data: any) {
@@ -221,6 +247,33 @@ export class ApiWorker {
     return response;
   }
 
+  public static async staff_give_assignment(token: string, data: any) {
+    const options = {
+      method: 'POST',
+      url: APIUrls.STAFF_GIVE_ASSIGNMENT,
+      headers: {
+        Authorization: 'Bearer '+token,
+        'content-type': 'application/json'
+      },
+      data: data
+    };
+    const response = await axios.request(options);
+    return response;
+  }
+
+  public static async staff_add_schedule(token: string, data: any) {
+    const options = {
+      method: 'POST',
+      url: APIUrls.STAFF_ADD_SCHEDULE,
+      headers: {
+        Authorization: 'Bearer '+token,
+        'content-type': 'application/json'
+      },
+      data: data
+    };
+    const response = await axios.request(options);
+    return response;
+  }
 
 
 

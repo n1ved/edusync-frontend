@@ -7,7 +7,7 @@ export class APIUrls {
   	public static readonly ADMIN_LOGIN = `${APIUrls.ADMIN_BASE_URL}/login`; //DONE
   	public static readonly ADMIN_SIGNUP = `${APIUrls.ADMIN_BASE_URL}/signup`;
 
-	public static readonly ADMIN_ADD_STAFF = `${APIUrls.ADMIN_BASE_URL}/addStaff`; 
+	public static readonly ADMIN_ADD_STAFF = `${APIUrls.ADMIN_BASE_URL}/addStaff`; //DONE
 	public static readonly ADMIN_VIEW_STAFF = `${APIUrls.ADMIN_BASE_URL}/viewStaff`; //DONE
 	public static readonly ADMIN_EDIT_STAFF = `${APIUrls.ADMIN_BASE_URL}/editStaff`; //DONE
 	public static readonly ADMIN_VIEW_STAFF_ADVISOR = `${APIUrls.ADMIN_BASE_URL}/viewStaffAdvisor`;
@@ -21,20 +21,20 @@ export class APIUrls {
 
 	public static readonly STAFF_GET_STUDENTS_BY_CLASS = `${APIUrls.STAFF_BASE_URL}/getStudentByClass`; //DONE
 	public static readonly STAFF_GET_STUDENT_BY_ID = `${APIUrls.STAFF_BASE_URL}/getStudentById`;
-	public static readonly STAFF_ADD_STUDENT = `${APIUrls.STAFF_BASE_URL}/addStudents`;
+	public static readonly STAFF_ADD_STUDENT = `${APIUrls.STAFF_BASE_URL}/addStudents`;	//DONE
 	public static readonly STAFF_DELETE_STUDENT = `${APIUrls.STAFF_BASE_URL}/deleteStudent`;
 	public static readonly STAFF_UPDATE_STUDENT = `${APIUrls.STAFF_BASE_URL}/updateStudent`;
 
-	public static readonly STAFF_VIEW_SCHEDULE = `${APIUrls.STAFF_BASE_URL}/viewSchedule`;
-	public static readonly STAFF_ADD_SCHEDULE = `${APIUrls.STAFF_BASE_URL}/addSchedule`;
+	public static readonly STAFF_VIEW_SCHEDULE = `${APIUrls.STAFF_BASE_URL}/viewSchedule`; //DONE
+	public static readonly STAFF_ADD_SCHEDULE = `${APIUrls.STAFF_BASE_URL}/addSchedule`; //DONE
 
 	public static readonly STAFF_CHECK_ATTENDANCE = `${APIUrls.STAFF_BASE_URL}/checkAttendance`;
 	public static readonly STAFF_GET_ATTENDANCE = `${APIUrls.STAFF_BASE_URL}/getAttendance`;
 	public static readonly STAFF_UPDATE_ATTENDANCE = `${APIUrls.STAFF_BASE_URL}/updateAttendance`;
 
-	public static readonly STAFF_GIVE_ASSIGNMENT = `${APIUrls.STAFF_BASE_URL}/giveAssignment`;
-	public static readonly STAFF_GET_ASSIGNMENT_BY_CLASS = `${APIUrls.STAFF_BASE_URL}/getAssignmentByClass`;
-	public static readonly STAFF_DELETE_ASSIGNMENT = `${APIUrls.STAFF_BASE_URL}/deleteAssignment`;
+	public static readonly STAFF_GIVE_ASSIGNMENT = `${APIUrls.STAFF_BASE_URL}/giveAssignment`; 
+	public static readonly STAFF_GET_ASSIGNMENT_BY_CLASS = `${APIUrls.STAFF_BASE_URL}/getAssignmentByClass`; //DONE
+	public static readonly STAFF_DELETE_ASSIGNMENT = `${APIUrls.STAFF_BASE_URL}/deleteAssignment`; 
 	public static readonly STAFF_MARK_ASSIGNMENT = `${APIUrls.STAFF_BASE_URL}/markAssignment`;
 	public static readonly STAFF_GET_MARKS = `${APIUrls.STAFF_BASE_URL}/getMarks`;
 	
