@@ -11,6 +11,7 @@ export class APIUrls {
 	public static readonly ADMIN_VIEW_STAFF = `${APIUrls.ADMIN_BASE_URL}/viewStaff`; //DONE
 	public static readonly ADMIN_EDIT_STAFF = `${APIUrls.ADMIN_BASE_URL}/editStaff`; //DONE
 	public static readonly ADMIN_VIEW_STAFF_ADVISOR = `${APIUrls.ADMIN_BASE_URL}/viewStaffAdvisor`;
+	public static readonly ADMIN_SHOW_CLASSES = `${APIUrls.ADMIN_BASE_URL}/showClasses`; //DONE
 
 	public static readonly ADMIN_DELETE_CLASS = `${APIUrls.ADMIN_BASE_URL}/deleteClass`;
 

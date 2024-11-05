@@ -56,7 +56,6 @@ export class ApiWorker {
     return response;
   }
 
-  //TODO: Add staff
   public static async addStaff(token: string, data: any) {
     data.password = await sha1(data.password);
     const options = {
@@ -86,6 +85,18 @@ export class ApiWorker {
     return response;
   }
 
+  public static async showClasses(token: string) {
+    const options = {
+      method: 'GET',
+      url: APIUrls.ADMIN_SHOW_CLASSES,
+      headers: {
+        Authorization: 'Bearer '+token,
+        'content-type': 'application/json'
+      }
+    };
+    const response = axios.request(options);
+    return response;
+  }
   //STAFF SECTION
   public static async staff_login(username: string, password: string) {
     const hashedPassword = await this.hashPassword(password);

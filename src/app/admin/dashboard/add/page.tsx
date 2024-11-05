@@ -39,6 +39,8 @@ export default function AddStaff() {
 
     const searchParams = useSearchParams();
     const search = searchParams.get('update');
+
+    const [availableClasses, setAvailableClasses] = React.useState([]);
     const [editMode , setEditMode] = React.useState(false);
 
     function convertBackendToFrontend(backendData:any) {
@@ -57,6 +59,19 @@ export default function AddStaff() {
             classes: allClasses,
         }
     }
+
+    function extractClassNames(classArray:any) {
+        return classArray.map(item => item.class);
+    }
+    
+    useEffect(() => {
+        ApiWorker.showClasses(document.cookie).then((response) => {
+            if(response.status == 200){
+                setAvailableClasses(extractClassNames(response.data));
+                console.log(response.data);
+            }
+        });
+    },[]);
     
 
     if(search !== null){
@@ -138,11 +153,6 @@ export default function AddStaff() {
         });
         return finalData;
     };
-
-    const availableClasses = {
-        "2026": ["CS26A", "CS26B", "CS26C"],
-        "2027": ["CS27A", "CS27B", "CS27C"]
-    }
 
 
     function handleClassInChargeChange(event : string){
@@ -291,23 +301,9 @@ export default function AddStaff() {
                                             <SelectItem value={"nocharge"}>No Class In Charge</SelectItem>
                                             <SelectItem value={"create-new"}>Create New Class</SelectItem>
                                             {
-                                                Object.keys(availableClasses).map((year) => {
-                                                    // @ts-ignore
-                                                    return (
-                                                        <SelectGroup key={year}>
-                                                            <SelectLabel>{year}</SelectLabel>
-                                                            {
-                                                                // @ts-ignore
-                                                                availableClasses[year].map((class_name) => {
-                                                                    return (
-                                                                        <SelectItem value={class_name}
-                                                                                    key={class_name}>{class_name}</SelectItem>
-                                                                    )
-                                                                })
-                                                            }
-                                                        </SelectGroup>
-                                                    )
-                                                })
+                                                availableClasses.map((cls) => (
+                                                    <SelectItem key={cls} value={cls}>{cls}</SelectItem>
+                                                ))
                                             }
                                         </SelectContent>
                                     </Select>
