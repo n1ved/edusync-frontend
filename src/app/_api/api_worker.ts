@@ -375,6 +375,24 @@ export class ApiWorker {
     }
   }
 
+  public static async staff_delete_schedule(token: string, data: any) {
+    try{
+      const options = {
+        method: 'DELETE',
+        url: APIUrls.STAFF_DELETE_SCHEDULE,
+        headers: {
+          Authorization: 'Bearer '+token,
+          'content-type': 'application/json'
+        },
+        data: data
+      };
+      const response = await axios.request(options);
+      return response;
+    }catch(e){
+      alert(e);
+    }
+  }
+
   public static async staff_mark_assignment(token: string, data: any) {
     try{
       const options = {

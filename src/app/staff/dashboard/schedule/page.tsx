@@ -101,7 +101,7 @@ export default function AddSchedule() {
         }));
     }
     function convertArrayToScheduleFormat(hoursArray, className) {
-        const days = ['mon', 'tue', 'wed', 'thu', 'fri'];
+        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
         const schedule = {};
         
         days.forEach((day, index) => {
@@ -127,13 +127,20 @@ export default function AddSchedule() {
     function onSubmission(){
         console.log(createScheduleFormat(scheduleData,weekdays));
         const data = convertArrayToScheduleFormat(scheduleData,classInCharge);
-        ApiWorker.staff_add_schedule(document.cookie, data).then((response) => {
-            console.log(response);
-            if(response.status === 200){
-                alert("Schedule Updated");
-                window.location.href = "/staff/dashboard/schedule";
-            }
-        });
+        const classJson = {
+            className: classInCharge
+        };
+        // ApiWorker.staff_delete_schedule(document.cookie,classJson).then((response) => {
+        //     if(response.status === 200){
+                ApiWorker.staff_add_schedule(document.cookie, data).then((response) => {
+                    console.log(response);
+                    if(response.status === 200){
+                        alert("Schedule Updated");
+                        window.location.href = "/staff/dashboard/schedule";
+                    }
+                });
+        //     }
+        // });
     }
 
     function goBack(){

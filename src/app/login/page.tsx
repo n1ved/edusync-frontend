@@ -58,7 +58,7 @@ export default function Login() {
                                 <Input
                                     id="email"
                                     type="text"
-                                    placeholder="Enter your ID"
+                                    placeholder="ID/Name/Username"
                                     required
                                     onChange={(e) => setUsername(e.target.value)}
                                 />
@@ -71,17 +71,17 @@ export default function Login() {
                             </div>
                             <TabsContent value="student">
                                 <Button type="submit" className="w-full" onClick={handleStudentLogin}>
-                                    Login
+                                    Login as Student
                                 </Button>
                             </TabsContent>
                             <TabsContent value="staff">
                                 <Button type="submit" className="w-full" onClick={handleStaffLogin}>
-                                    Login
+                                    Login as Staff
                                 </Button>
                             </TabsContent>
                             <TabsContent value="admin">
                                 <Button type="submit" className="w-full" onClick={handleAdminLogin}>
-                                    Login
+                                    Login as Admin
                                 </Button>
                             </TabsContent>
                         </div>

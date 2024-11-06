@@ -57,6 +57,8 @@ export default function Dashboard() {
         }));
     }
 
+    const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
     useEffect(() => {
         ApiWorker.view_student_details(document.cookie).then((response) => {
             if(response.status === 200) {
@@ -213,7 +215,7 @@ export default function Dashboard() {
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
-                                                {scheduleData.map((data) => (
+                                                {scheduleData.map((data,index) => (
                                                     <TableRow key={data.day}>
                                                         <TableCell className="font-medium">
                                                             {data.day}

@@ -23,11 +23,12 @@ export class APIUrls {
 	public static readonly STAFF_GET_STUDENTS_BY_CLASS = `${APIUrls.STAFF_BASE_URL}/getStudentByClass`; //DONE
 	public static readonly STAFF_GET_STUDENT_BY_ID = `${APIUrls.STAFF_BASE_URL}/getStudentById`; //UNREQUIRED
 	public static readonly STAFF_ADD_STUDENT = `${APIUrls.STAFF_BASE_URL}/addStudents`;	//DONE
-	public static readonly STAFF_DELETE_STUDENT = `${APIUrls.STAFF_BASE_URL}/deleteStudent`;
+	public static readonly STAFF_DELETE_STUDENT = `${APIUrls.STAFF_BASE_URL}/deleteStudent`; 
 	public static readonly STAFF_UPDATE_STUDENT = `${APIUrls.STAFF_BASE_URL}/updateStudent`;
 
 	public static readonly STAFF_VIEW_SCHEDULE = `${APIUrls.STAFF_BASE_URL}/viewSchedule`; //DONE
 	public static readonly STAFF_ADD_SCHEDULE = `${APIUrls.STAFF_BASE_URL}/addSchedule`; //DONE
+	public static readonly STAFF_DELETE_SCHEDULE = `${APIUrls.STAFF_BASE_URL}/deleteSchedule`; //DONE
 
 	public static readonly STAFF_CHECK_ATTENDANCE = `${APIUrls.STAFF_BASE_URL}/checkAttendance`; 
 	public static readonly STAFF_GET_ATTENDANCE = `${APIUrls.STAFF_BASE_URL}/getAttendance`; 

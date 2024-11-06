@@ -51,7 +51,9 @@ export default function Dashboard() {
                     setAdvisorMode(true);
                     response.data.in_charge_of = response.data.in_charge_of.toLowerCase();
                     ApiWorker.staff_view_schedule(document.cookie, response.data.in_charge_of).then((scheduleResponse) => {
-                        setScheduleData(convertScheduleData(scheduleResponse.data));
+                        setScheduleData(convertScheduleData(sortScheduleData(scheduleResponse.data)));
+                        console.log(scheduleResponse.data);
+                        console.log(sortScheduleData(scheduleResponse.data));
                     });
                     response.data.in_charge_of = response.data.in_charge_of.toUpperCase();
                     ApiWorker.staff_view_students(document.cookie, response.data.in_charge_of).then((studentResponse) => {
@@ -83,6 +85,18 @@ export default function Dashboard() {
             };
         });
     }
+
+    function sortScheduleData(inputData: any[]): any {
+        const dayMapping: { [key: string]: number } = {
+            'Monday': 0,
+            'Tuesday': 1,
+            'Wednesday': 2,
+            'Thursday': 3,
+            'Friday': 4
+        };
+    
+        return inputData.sort((a, b) => dayMapping[a.day] - dayMapping[b.day]);
+    }
     
     function convertScheduleData(inputData: any[]):any {
         const dayMapping: { [key: string]: string } = {
@@ -92,8 +106,9 @@ export default function Dashboard() {
             'Thursday': 'THU',
             'Friday': 'FRI'
         };
+
     
-        return inputData.map(item => ({
+        return sortScheduleData(inputData).map(item => ({
             day: dayMapping[item.day],
             hrs: item.hours // rename 'hours' to 'hrs'
         }));
@@ -114,97 +129,7 @@ export default function Dashboard() {
             };
         });
     }
-
-    // const assignmentData = [
-    //     {
-    //         id: "1",
-    //         description: "Assignment 1",
-    //         class: "CST201",
-    //         dueDate: "01/01/2021"
-    //     },
-    //     {
-    //         id: "2",
-    //         description: "Assignment 2",
-    //         class: "CST201",
-    //         dueDate: "01/01/2021"
-    //     },
-    //     {
-    //         id: "3",
-    //         description: "Assignment 3",
-    //         class: "CST201",
-    //         dueDate: "01/01/2021"
-    //     },
-    //     {
-    //         id: "4",
-    //         description: "Assignment 4",
-    //         class: "CST201",
-    //         dueDate: "01/01/2021"
-    //     }
-    // ]
-
-    // const scheduleData = [
-    //     {
-    //         day: "MON",
-    //         hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-    //     },
-    //     {
-    //         day: "TUE",
-    //         hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-    //     },
-    //     {
-    //         day: "WED",
-    //         hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-    //     },
-    //     {
-    //         day: "THU",
-    //         hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-    //     },
-    //     {
-    //         day: "FRI",
-    //         hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-    //     },
-    //     {
-    //         day: "SAT",
-    //         hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-    //     },
-    //     {
-    //         day: "SUN",
-    //         hrs: ["CST201", "CST201", "CST201", "CST201", "CST201", "CST201"]
-    //     }
-    // ]
-
-
-
-    // const studentData = [
-    //     {
-    //         id: "1",
-    //         name: "John Doe",
-    //         DOB: "01/01/2001",
-    //         phone: "1234567890",
-    //         createdAt: "01/01/2021"
-    //     },
-    //     {
-    //         id: "2",
-    //         name: "Jane Doe",
-    //         DOB: "01/01/2001",
-    //         phone: "1234567890",
-    //         createdAt: "01/01/2021"
-    //     },
-    //     {
-    //         id: "3",
-    //         name: "John Smith",
-    //         DOB: "01/01/2001",
-    //         phone: "1234567890",
-    //         createdAt: "01/01/2021"
-    //     },
-    //     {
-    //         id: "4",
-    //         name: "Jane Smith",
-    //         DOB: "01/01/2001",
-    //         phone: "1234567890",
-    //         createdAt: "01/01/2021"
-    //     }
-    //     ]
+    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
     return (
         <TooltipProvider>
