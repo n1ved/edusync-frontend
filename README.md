@@ -20,7 +20,8 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### TODO :
+### TODO : 
+(everything?)
 - [ ] Clean Code
 - [ ] Redo backend integration
 - [ ] Proper exception handling 
