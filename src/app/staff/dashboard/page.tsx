@@ -121,7 +121,7 @@ export default function Dashboard() {
             const formattedDOB = `${dob.getDate().toString().padStart(2, '0')}/${(dob.getMonth() + 1).toString().padStart(2, '0')}/${dob.getFullYear()}`;
             
             return {
-                id: (index + 1).toString(), // or student.register_no if you prefer
+                id: student.register_no, // or student.register_no if you prefer
                 name: student.name,
                 DOB: formattedDOB,
                 phone: student.phone_number,
@@ -159,7 +159,9 @@ export default function Dashboard() {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
+                        <Link href={"/login"}>
                             <DropdownMenuItem>Logout</DropdownMenuItem>
+                            </Link>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </header>

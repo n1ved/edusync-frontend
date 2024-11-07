@@ -25,6 +25,7 @@ import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Calendar} from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { ApiWorker } from "@/app/_api/api_worker";
+import { sha1 } from "js-sha1";
 
 
 export default function AddStaff() {
@@ -36,7 +37,10 @@ export default function AddStaff() {
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
-
+    function sleep(ms:number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    
 
     function onSubmission(){
         if (password != confirmPassword){
@@ -45,35 +49,37 @@ export default function AddStaff() {
             setConfirmPassword("");
         }
         ApiWorker.staff_self_details(document.cookie).then((response) => {
+            sleep(2000);
             if(response.status === 200) {
                 setUsername(response.data.in_charge_of);
-            }
-        });
-
-        function formatDateAlternative(date:any) {
-            const d = new Date(date);
-            return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
-        }
-
-        setDate(formatDateAlternative(date));
-
-        ApiWorker.add_student(document.cookie, {
-            studentClass : username,
-            students : [
-                {
-                    register_no : id,
-                    name : name,
-                    phone_number : phone,
-                    date_of_birth : date,
-                    password : password
+                function formatDateAlternative(date:any) {
+                    const d = new Date(date);
+                    return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
                 }
-            ]
-        }).then((response) => {
-            if(response.status === 200) {
-                alert("Student added successfully");
-                window.location.href = "/staff/dashboard";
+        
+                setDate(formatDateAlternative(date));
+        
+                ApiWorker.add_student(document.cookie, {
+                    studentClass : username,
+                    students : [
+                        {
+                            register_no : id,
+                            name : name,
+                            phone_number : phone,
+                            date_of_birth : date,
+                            password : sha1(password)
+                        }
+                    ]
+                }).then((response) => {
+                    if(response.status === 200) {
+                        alert("Student added successfully");
+                        window.location.href = "/staff/dashboard";
+                    }
+                });
             }
         });
+
+       
     }
 
     function goBack(){

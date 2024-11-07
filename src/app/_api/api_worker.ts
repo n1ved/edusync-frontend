@@ -2,6 +2,8 @@ import axios from 'axios';
 import {sha1} from 'js-sha1'
 import dotenv from 'dotenv'
 import { APIUrls } from './url';
+import { url } from 'inspector';
+import { headers } from 'next/headers';
 
 
 export class ApiWorker {
@@ -171,7 +173,7 @@ export class ApiWorker {
       const response = await axios.request(options);
       return response;
     }catch(e){
-      alert(e);
+      console.log(e);
     }
   }
 
@@ -315,6 +317,24 @@ export class ApiWorker {
         },
         data: data
       };
+      const response = await axios.request(options);
+      return response;
+    }catch(e){
+      alert(e);
+    }
+  }
+
+  public static async delete_student(token:string , data:any){
+    try{
+      const options = {
+        method : 'DELETE',
+        url : APIUrls.STAFF_DELETE_STUDENT,
+        headers: {
+           Authorization: 'Bearer '+token,
+          'content-type': 'application/json'
+        },
+        data: data
+      }
       const response = await axios.request(options);
       return response;
     }catch(e){

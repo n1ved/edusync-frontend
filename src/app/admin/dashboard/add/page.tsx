@@ -160,6 +160,7 @@ export default function AddStaff() {
            setNewClassCreation(true);
        }else{
            setClassInCharge(event);
+           console.log(classInCharge);
        }
     }
     function onSubmission(){

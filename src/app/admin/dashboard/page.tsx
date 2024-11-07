@@ -128,7 +128,9 @@ export default function Dashboard() {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
+                            <Link href={"/login"}>
                             <DropdownMenuItem>Logout</DropdownMenuItem>
+                            </Link>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </header>
